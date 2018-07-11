@@ -1,0 +1,36 @@
+.main-body {
+    height: 100%;
+}
+
+.left-side, .right-side {
+    position: relative;
+    min-height: 750px;
+}
+
+.left-side {
+    float: left;
+    width: 16%;
+    background-color: yellow;
+}
+
+.right-side {
+    float: right;
+    width: 84%;
+    background-color: green;
+}
+
+.item {
+    background-color: cyan;
+}
+
+.no-result {
+    padding: 20px;
+}
+
+.error {
+    border-color: red;
+}
+
+button {
+    padding: 5px 10px
+}
