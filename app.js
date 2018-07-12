@@ -1,44 +1,59 @@
 const express = require('express');
 const path = require('path');
-const port = process.env.PORT || 3001;
-const chalk = require('chalk');
 const bodyParser = require('body-parser');
-const config = require("./config.json");
+const config = require("./config");
 const mongoose = require('mongoose');
-const cors = require('cors')
+const passport = require('passport');
+const cors = require('cors');
+const util = require('./server/util');
 
 // setting up express
 const app = express();
 app.use(express.static(__dirname + '/build'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+require('./server/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
 app.get('*', function(req, res) {
     res.sendFile(path.resolve(__dirname)+'/build/index.html');
 });
 
+if(process.env.NODE_ENV === 'development'){
+    util.log('Development Mode...');
+    /*const webpack = require('webpack');
+    const webpackConfig = require('./webpack.config');
+    const compiler = webpack(webpackConfig);
+    app.use(require("webpack-dev-middleware")(compiler, {
+        noInfo: true, publicPath: webpackConfig.output.publicPath
+    }));
+    app.use(require("webpack-hot-middleware")(compiler));*/
+}
+else{
+    app.options('*', cors())
+    util.log('CORS-enabled web server');
+}
+
+// handle connection to mongodb
 mongoose.Promise = global.Promise;
-mongoose.connect(config.mongo);
+mongoose.connect(config.mongoURI,config.mongoOpts);
 mongoose.connection.on('connected', function () {  
-    console.log(chalk.yellow('Mongoose default connection open to ' + config.mongo));
+    util.logSuccess('Mongoose default connection open to ' + config.mongoURI);
 }); 
 
 mongoose.connection.on('error',function (err) {  
     app.get('/404',function(req, res) {
         res.send('Database connection error')
     })
-    console.log(chalk.yellow('Mongoose default connection error: ' + err));
+    util.logError('Mongoose default connection error: ' + err);
 }); 
 
 mongoose.connection.on('disconnected', function () {  
-    console.log(chalk.yellow('Mongoose default connection disconnected')); 
+    util.logWarning('Mongoose default connection disconnected'); 
 });
 
 // port listening
-app.set('port', (process.env.port || 3001));
-if(process.env.NODE_ENV !== 'development'){
-    app.options('*', cors())
-    console.log('CORS-enabled web server');
-}
+app.set('port', (process.env.port || config.port));
 
 // setting headers
 app.use(function (req, res, next) {
@@ -52,7 +67,10 @@ app.use(function (req, res, next) {
 });
 
 // routes
-app.use('/api', require('./server/routes'));
+const routePrefix = '/api';
+app.use(routePrefix, require('./server/routes/user'));
+app.use(routePrefix, require('./server/routes/source'));
+app.use(routePrefix, require('./server/routes/item'));
 
 // error handling middleware
 app.use(function(err,req,res,next){
@@ -61,5 +79,5 @@ app.use(function(err,req,res,next){
 
 // confirm that express application is running
 app.listen(app.get('port'), function(){
-    console.log(chalk.blue('now listening for requests on port '+app.get('port')+'...')); 
+    util.logSuccess('now listening for requests on port '+app.get('port')+'...'); 
 });

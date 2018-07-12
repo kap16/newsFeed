@@ -1,17 +1,15 @@
 // Importing Libraries
 import React from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
-import {bindActionCreators} from 'redux';  
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';  
+import { connect } from 'react-redux';
 const fetch = require("node-fetch");
 
 // Importing files
 import * as actions from '../actions/index';
 import Navbar from '../components/navbar';
-import Modal from '../components/modal/modal';
-import AddSource from '../components/modal/addSource';
-const config = require('../../config.json');
+const config = require('../../config');
 
 class Home extends React.Component{
     constructor(props){
@@ -26,8 +24,8 @@ class Home extends React.Component{
         fetch(url,{
             method: "GET",
             headers: {
+                "Authorization": sessionStorage.getItem(config.sessionId),
                 "Content-Type": "application/json",
-                'Accept': 'application/json'
             }
         })
         .then((res) => res.json())
@@ -60,6 +58,7 @@ class Home extends React.Component{
     }
 
     render(){
+        console.log(this.props);
         return( 
             <div className="main-body">
                 <Navbar/>
@@ -86,4 +85,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

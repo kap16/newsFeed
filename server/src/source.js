@@ -25,8 +25,9 @@ module.exports = {
      * @param res response object
      */
     getSources(req, res){
-        var data = req.body
-        Source.find({},function(err,sources){
+        var decoded = jwtDecode(req.get('Authorization'));
+        console.log(decoded);
+        Source.find({createdBy: decoded.user.id},function(err,sources){
             if (err){
                 util.logError(err);
             }
@@ -41,31 +42,38 @@ module.exports = {
      * @param res response object
      */
     addSource(req, res){
-        var data = req.body
-        Source.find({link: data.link},function(err,sources){
-            if (err){
-                util.logError(err);
-            }else if(sources.length > 0){
-                util.logError(sources[0]);
-                res.status(200).send({message :'Source with this url already exists'});
-            }else{
-                var currTime = new Date().toISOString();
-                let source = new Source({
-                    title: data.title,
-                    description: data.desc, 
-                    link: data.link,
-                    createdOn: currTime,
-                    updatedOn: currTime
-                });
-                source.save(function(err){
-                    if(err){
-                        util.logError(err);
-                        res.status(500).send();
-                    }
-                    res.status(200).send();
-                })
-            }
-        });
+        var data = req.body;
+        var decoded = jwtDecode(req.get('Authorization'));
+        console.log(decoded);
+        if (decoded.user.id == undefined){
+            res.send({message: 'unauthorized: cannot find user'});
+        }else{
+            Source.find({link: data.link},function(err,sources){
+                if (err){
+                    util.logError(err);
+                }else if(sources.length > 0){
+                    util.logError(sources[0]);
+                    res.status(200).send({message :'Source with this url already exists'});
+                }else{
+                    var currTime = new Date().toISOString();
+                    let source = new Source({
+                        title: data.title,
+                        description: data.desc, 
+                        link: data.link,
+                        createdOn: currTime,
+                        createdBy: decoded.user.id,
+                        updatedOn: currTime
+                    });
+                    source.save(function(err){
+                        if(err){
+                            util.logError(err);
+                            res.status(500).send();
+                        }
+                        res.status(200).send();
+                    })
+                }
+            });
+        }  
     },
 
     /** 

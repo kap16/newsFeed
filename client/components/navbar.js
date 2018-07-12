@@ -10,40 +10,12 @@ import * as actions from '../actions/index';
 import Modal from '../components/modal/modal';
 import AddSource from '../components/modal/addSource';
 import navbarStyle from '../css/default/navbar.css'
-const config = require('../../config.json');
+const config = require('../../config');
 
 class Navbar extends React.Component{
     constructor(props){
         super(props);
         this.state = {};
-
-        this.showModal = this.showModal.bind(this);
-        this.showAddSourceModal = this.showAddSourceModal.bind(this);
-        this.hideModal = this.hideModal.bind(this)
-    }
-
-    showModal(){
-        /*this.setState({
-            ...this.state,
-            modalActive: !this.state.modalActive,
-            modal: (this.state.modalActive ? "" : "Generic") 
-        });*/
-    }
-
-    showAddSourceModal(){
-        /*this.setState({
-            ...this.state,
-            modalActive: !this.state.modalActive,
-            modal: (this.state.modalActive ? "" : "Add Source") 
-        });*/
-    }
-
-    hideModal(){
-        /*this.setState({
-            ...this.state,
-            modalActive: !this.state.modalActive,
-            modal: (this.state.modalActive ? "" : "Generic") 
-        });*/
     }
 
     render(){
@@ -81,6 +53,7 @@ class Navbar extends React.Component{
                                         show={this.props.modal.active}/>
                                     :null
                                 }
+                                <a href="#" onClick={this.props.actions.logout}>Logout</a>
                                 <a href="#">{"v"+VERSION}</a>
                             </nav>
                         </div>

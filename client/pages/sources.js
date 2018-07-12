@@ -7,7 +7,7 @@ const fetch = require("node-fetch");
 
 // Importing files
 import * as actions from '../actions/index';
-const config = require('../../config.json');
+const config = require('../../config');
 import Navbar from '../components/navbar';
 import SourceItem from '../components/list/sourceItem';
 
@@ -27,23 +27,21 @@ class Sources extends React.Component{
         fetch(url,{
             method: "GET",
             headers: {
+                "Authorization": sessionStorage.getItem(config.sessionId),
                 "Content-Type": "application/json",
             }
         })
-        .then((res) => res.json())
+        //.then((res) => res.json())
         .then(function(output){
-            console.log("output",output)
-            console.log(url === output.url)
+            console.log("output",output);
+            console.log(url === output.url);
             this.setState({ sources: output.sources });
-            
         })
         .catch(function(e){ console.log(e);}); 
-        console.log("after fetch");
     }
     
     renderSources(){
         var sources = this.state.sources;
-        console.log("renderSources",this.state);
         if(sources.length > 0){
             return (
                 <table id="sources" className="table table-striped">

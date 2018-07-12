@@ -1,3 +1,5 @@
+// This file is needed for reducers
+
 export const AUTH = 'AUTH'; 
 export const UNAUTH = 'UNAUTH';
 

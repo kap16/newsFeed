@@ -16,6 +16,7 @@ const ItemSchema = new Schema({
     flagged: { type: Boolean, default: false },
     favourite: { type: Boolean, default: false },
     createdOn: { type: Date, required:true },
+    createdBy: { type: Schema.Types.ObjectId, ref: 'User', required:true },
     updatedOn: { type: Date },
     source: { type: String},
     deleted: { type: Boolean, default: false },

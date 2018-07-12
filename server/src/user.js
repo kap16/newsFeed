@@ -1,31 +1,29 @@
 // Import Libraries
-const chalk = require('chalk');
 const bcrypt = require('bcrypt');
-var User = require('../models/user');
-const express = require('express');
-const jwt = require('jsonwebtoken'); 
+const User = require('../models/user');
 const util = require('../util');
-const config = require('../../config');
 
 module.exports = {
     /** 
-     * registers user from 
+     * registers user to database
      * @param req request object
      * @param res response object
      */
     register(req,res){
         var data = req.body;
+        console.log(data);
         const username = data.username;
         const password = data.password; 
         const password2 = data.password2;
         const email = data.email;
 
-        req.checkBody('username','Username field is required').notEmpty();
-        req.checkBody('password','Password field is required').notEmpty();
-        req.checkBody('password2','Passwords do not match').equals(password2);
-        req.checkBody('email','Email field is required').notEmpty();
+        // TODO: Validation
+        //req.checkBody('username','Username field is required').notEmpty();
+        //req.checkBody('password','Password field is required').notEmpty();
+        //req.checkBody('password2','Passwords do not match').equals(password2);
+        //req.checkBody('email','Email field is required').notEmpty();
 
-        const errors = req.validationErrors();
+        /*const errors = req.validationErrors();
         if(errors){
             util.logError('error during validation');
             console.log(errors);
@@ -33,7 +31,7 @@ module.exports = {
                 url: '/register'
             };
             res.json(resBody);
-        }else{
+        }else{*/
             let newUser = new User({
                 username:username,
                 email:email, 
@@ -41,6 +39,10 @@ module.exports = {
                 createdOn: new Date().toISOString()
             });
             bcrypt.genSalt(10, function(err,salt){
+                if(err){
+                    util.logError('error during salt generation');
+                    console.log(err);
+                }
                 bcrypt.hash(newUser.password, salt, function(err,hash){
                     if(err){
                         util.logError('error during hashing');
@@ -68,47 +70,7 @@ module.exports = {
                     })
                 });
             });
-        }
-    },
-
-    /** 
-     * registers user when app doesn't require user login
-     * @param req request object
-     * @param res response object
-     */
-    autoRegister(req,res){
-        var data = req.body;
-        let newUser = new User({
-            createdOn: new Date().toISOString()
-        });
-        bcrypt.genSalt(10, function(err,salt){
-            bcrypt.hash(newUser.password, salt, function(err,hash){
-                if(err){
-                    util.logError('error during hashing');
-                    console.log(err);
-                }
-                newUser.password = hash;
-                newUser.save(function(error){
-                    if(error){
-                        console.log(error);
-                        return;
-                    }else{
-                        var resBody = {
-                            user:{
-                                id: newUser._id,
-                                username: newUser.username,
-                                password: newUser.password,
-                                createdOn: newUser.createdOn
-                            },
-                            statusCode: res.statusCode,
-                        };
-                        var token = util.generateToken(resBody);
-                        console.log('Token: '+token);
-                        res.status(200).send({body: resBody, token: token});
-                    }
-                })
-            });
-        });
+        //}
     },
 
     /** 
@@ -117,35 +79,34 @@ module.exports = {
      * @param res response object
      */
     login(req, res) {
-        var msg;
-        req.checkBody('username','Username field is required').notEmpty();
-        req.checkBody('password','Password field is required').notEmpty();
-        var err = req.validationErrors();
-        
-        if (err) {
-            console.log(err);
-            msg = "Internal server error"
-            util.logError(msg)
-            res.status(401).send({message:msg});
-        }
-        if (!req.user) {
-            msg = "no such user found"
-            util.logError(msg)
-            res.status(401).send({message:msg});
-        }
-        req.logIn(req.user, function(err) {
+        //req.checkBody('username','Username field is required').notEmpty();
+        //req.checkBody('password','Password field is required').notEmpty();
+        //var err = req.validationErrors();
+        var resObj;
+
+        console.log("login: ",req.body);
+        req.logIn(req.body, function(err) {
             if (err) {
-                console.log(err) 
-                res.status(500).send({message:"Cannot log you in"});
+                util.logError(err)
+                console.log(err);
+                res.status = 500;
+                resObj = {
+                    message:"Cannot log you in"
+                };
             }
-            var resBody = {
-                user:{
-                    id: req.user._id,
-                    username: req.user.username
+            else{
+                let user = {
+                    id: req.body._id,
+                    username: req.body.username
                 }
-            };
-            var token = util.generateToken(resBody);
-            res.status(200).send({body: resBody, token: token});
+                let token = util.generateToken(user);
+                resObj = {
+                    token: token,
+                    user: user
+                };
+                util.logSuccess("Successful login");
+            } 
+            res.send(resObj);
         });
     },
 

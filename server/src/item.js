@@ -10,7 +10,8 @@ module.exports = {
      */
     getItem(req, res){
         var data = req.body
-        Item.findOne({id: data._id},function(err,items){
+        var decoded = jwtDecode(req.get('Authorization'));
+        Item.findOne({id: data._id,createdBy:decoded.user._id},function(err,items){
             if (err){
                 util.logError(err);
             }else{
@@ -26,7 +27,8 @@ module.exports = {
      */
     getItems(req, res){
         var data = req.body
-        Item.find({}).sort({pubDate: -1}).limit(data.pagination).exec(function(err,items){
+        var decoded = jwtDecode(req.get('Authorization'));
+        Item.find({createdBy:decoded.user._id}).sort({pubDate: -1}).limit(data.pagination).exec(function(err,items){
             if (err){
                 util.logError(err);
             }else{
@@ -42,6 +44,7 @@ module.exports = {
      */
     update(req, res){
         var data = req.body;
+        var decoded = jwtDecode(req.get('Authorization'));
         Source.find({}, function(err,sources){
             if (err){
                 util.logError(err);

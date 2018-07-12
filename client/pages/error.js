@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 
 // Importing files
 import * as actions from '../actions/index';
-const config = require('../../config.json');
+const config = require('../../config');
 
 class ErrorPage extends React.Component{
     render(){

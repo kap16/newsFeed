@@ -13,40 +13,79 @@ class Login extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            identifier:'',
-            errors: {},
-            formErrors: {username: '', password: ''}
+            formFields: {
+                username: '', 
+                password: ''
+            },
+            formErrors:{
+                username: '', 
+                password: ''
+            }
         }
         this.onSave = this.onSave.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.validate = this.validate.bind(this);
     };
+
+    onUsernameFieldChange(e){
+        this.setState({
+            formFields:{ 
+                username: e.target.value,
+                password: this.state.formFields.password     
+            }
+        });
+    }
+
+    onPasswordFieldChange(e){
+        this.setState({
+            formFields:{ 
+                username: this.state.formFields.username,
+                password: e.target.value 
+            }
+        });
+    }
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
+
+    validate(username, password){
+        const errors = {
+            username: '', 
+            password: ''
+        };
+
+        // username
+        if (username.length === 0) {
+            errors.username = "Name can't be empty";
+        };
+        
+        // password
+        if (password.length < 6) {
+            errors.password = "Password should be at least 6 characters long";
+        };
+        
+        return errors;
+    }
     
     onSave(e){
         e.preventDefault();
-        //if(this.refs.uSignIn.value === "" || this.refs.pSignIn.value===""){
-        if(this.refs.uSignIn.value === "" ){
-            this.setState({formErrors:{username: "Email required"}});
-        }
-        if(this.refs.pSignIn.value === "" ){
-            this.setState({formErrors:{password: "Password required"}});
+        const errors = this.validate(this.state.formFields.username,this.state.formFields.password);
+        if (errors.username !== '' || errors.password !== '') {
+            this.setState({ formErrors:errors });
         }
         else{
             var data = {
-                "username": this.refs.uSignIn.value,
-                "password": this.refs.pSignIn.value
+                "username": this.state.formFields.username,
+                "password": this.state.formFields.password
             };
             this.props.actions.loginUser(data);
         }
     }
 
     render () {
-        const { errors, identifier, isLoading } = this.state;
-        var style = {backgroundColor: '#292931'};
-        var style2 = {color: 'white'};
+        //var style = {backgroundColor: '#292931'};
+        var style2 = {color: '#FA9696'};
         return(
             <div id="login" className="login-bg">
                 <form onSubmit={this.onSave} onChange={this.onChange}>
@@ -56,10 +95,8 @@ class Login extends React.Component {
                         type="text"
                         className="text-input"
                         placeholder="Username"
-                        defaultValue=""
-                        ref="uSignIn"
-                        error={errors.identifier}
-                        onChange={this.onChange}
+                        value={this.state.formFields.username}
+                        onChange={(e) => this.onUsernameFieldChange(e)}
                     />
                     <p style={style2}>{this.state.formErrors.username}</p>
                     <input
@@ -67,18 +104,11 @@ class Login extends React.Component {
                         type="password"
                         className="text-input"
                         placeholder="Password"
-                        defaultValue=""
-                        ref="pSignIn"
-                        error={errors.password}
-                        onChange={this.onChange}
+                        value={this.state.formFields.password}
+                        onChange={(e) => this.onPasswordFieldChange(e)}
                     />
                     <p style={style2}>{this.state.formErrors.password}</p>
-                    <input
-                        className="login-btn"
-                        type="submit"
-                        value="Sign In"
-                        onChange={this.onChange}
-                    />
+                    <button type="submit"className="login-btn">Sign In</button>
                 </form>
                 <p id="login-switch">Don't have an account? Click <Link to={"/register"}>here</Link> to sign up</p>
             </div>

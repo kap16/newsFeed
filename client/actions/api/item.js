@@ -1,6 +1,5 @@
 const fetch = require("node-fetch");
-const config = require("../../../config.json");
-import { browserHistory } from 'react-router';  
+const config = require("../../../config");
 import * as types from '../types';
 
 module.exports = {  

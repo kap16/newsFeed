@@ -1,23 +1,14 @@
-const jwt = require('jsonwebtoken');  
-const passport = require('passport');
-const ExtractJwt = require("passport-jwt").ExtractJwt;
-const JwtStrategy = require("passport-jwt").Strategy; 
 const LocalStrategy = require('passport-local').Strategy;
-const config = require('../config.json');
 const bcrypt = require('bcrypt');
 const util = require('./util');
-var User = require('./models/user');
-
-var jwtOptions = {};
-jwtOptions.jwtFromRequest =  ExtractJwt.fromAuthHeaderAsBearerToken();
-jwtOptions.secretOrKey = config.passportSecret;
+const User = require('./models/user');
 
 module.exports = function(passport){
-    // local strat
+    // local strategy
     passport.use(new LocalStrategy({ "passReqToCallback": true },
         function(req, username, password, done){
             // Match username
-            util.log(username);
+            util.log("Auth" + username);
             let query = {username:username};
             User.findOne(query, function(err, user){
                 if(err) util.logError(err);
@@ -42,7 +33,7 @@ module.exports = function(passport){
     );
 
     passport.serializeUser(function(user, done) {
-        done(null, user.id);
+        done(null, user);
     });
       
     passport.deserializeUser(function(id, done) {

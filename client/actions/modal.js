@@ -1,6 +1,3 @@
-const fetch = require("node-fetch");
-const config = require("../../config.json");
-import { browserHistory } from 'react-router';  
 import * as types from './types';
 
 export function hideModal(){

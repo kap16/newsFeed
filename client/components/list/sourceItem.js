@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import style from '../../css/default/modal.css';
 import { toast } from 'react-toastify';
-const config = require('../../../config.json');
+const config = require('../../../config');
 
 export default class SourceItem extends React.Component {
     constructor(props){

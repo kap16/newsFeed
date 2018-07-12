@@ -9,6 +9,7 @@ const SourceSchema = new Schema({
     // database stuff
     createdOn: { type: Date, required: true },
     updatedOn: { type: Date },
+    createdBy: { type: Schema.Types.ObjectId, ref: 'User', required:true },
     canDelete: { type: Boolean,default: true },
     deleted: { type: Boolean, default: false },
     deletedOn: { type: Date, default: null }

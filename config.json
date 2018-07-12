@@ -1,8 +1,0 @@
-{
-    "port":3001,
-    "client":"http://localhost:3001",
-    "api":"http://localhost:3001/api",
-    "mongo": "mongodb://localhost/news-feed-db",
-    "sessionId":"sessionID",
-    "passportSecret": "someSecret"
-}

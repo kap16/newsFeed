@@ -14,107 +14,170 @@ class Register extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            username:'',
-            email:'',
-            password:'',
-            password2:'',
-            errors: {},
-            isLoading: false
+            formFields: {
+                email:'',
+                username: '', 
+                password: '',
+                password2:''
+            },
+            formErrors:{
+                email:'',
+                username: '', 
+                password: '',
+                password2:''
+            }
         }
 
-        this.onSignUp = this.onSignUp.bind(this);
-        this.onChange = this.onChange.bind(this);
+        this.onSave = this.onSave.bind(this);
+        this.validate = this.validate.bind(this);
     };
 
+    onEmailFieldChange(e){
+        this.setState({
+            formFields: { 
+                email: e.target.value,
+                username: this.state.formFields.username, 
+                password: this.state.formFields.password, 
+                password2: this.state.formFields.password2
+            }
+        });
+    }
+
+    onUsernameFieldChange(e){
+        this.setState({
+            formFields: { 
+                email: this.state.formFields.email,
+                username: e.target.value, 
+                password: this.state.formFields.password, 
+                password2: this.state.formFields.password2
+            }
+        });
+    }
+
+    onPasswordFieldChange(e){
+        this.setState({
+            formFields: { 
+                email: this.state.formFields.email,
+                username: this.state.formFields.username, 
+                password: e.target.value, 
+                password2: this.state.formFields.password2
+            }
+        });
+    }
+
+    onPassword2FieldChange(e){
+        this.setState({
+            formFields: { 
+                email: this.state.formFields.email,
+                username: this.state.formFields.username, 
+                password: this.state.formFields.password, 
+                password2: e.target.value
+            }
+        });
+    }
+
+    validate(email, username, password, password2){
+        const errors = {
+            email:'',
+            username: '', 
+            password: '',
+            password2:''
+        };
+
+        // email
+        if (email.length < 5) {
+            errors.email = "Email should be at least 5 characters long";
+        }
+        else if (email.split('').filter(x => x === '@').length !== 1) {
+            errors.email = "Email should contain an @";
+        }
+        else if (email.indexOf('.') === -1) {
+            errors.email = "Email should contain at least one dot";
+        }
+
+        // username
+        if (username.length === 0) {
+            errors.username ="Name can't be empty";
+        }
+    
+        // password
+        if (password.length < 6) {
+            errors.password = "Password should be at least 6 characters long";
+        }
+        if (password2 !== password) {
+            errors.password2 = "Passwords do not match";
+        }
+    
+        return errors;
+    }
+
     // create user
-    onSignUp(e){
+    onSave(e){
         e.preventDefault();
-        if(this.refs.email.value === "" ){
-            this.setState({errors:{email: "Email required"}});
-        }
-        if(this.refs.username.value === "" ){
-            this.setState({errors:{username: "Username required"}});
-        }
-        if(this.refs.password.value === "" ){
-            this.setState({errors:{password: "Password required"}});
-        }
-        if(this.refs.password2.value === "" ){
-            this.setState({errors:{password2: "Password Confirm required"}});
+        const errors = this.validate(
+            this.state.formFields.email,
+            this.state.formFields.username,
+            this.state.formFields.password,
+            this.state.formFields.password2);
+        if (errors.email !== '' || errors.username !== '' || errors.password !== '' || errors.password2 !== '') {
+            this.setState({ formErrors:errors });
         }
         else{
             var data = {
-                "email": this.refs.email.value,
-                "username": this.refs.username.value,
-                "password": this.refs.password.value,
-                "password2": this.refs.password2.value
+                "email": this.state.formFields.email,
+                "username": this.state.formFields.username,
+                "password": this.state.formFields.password,
+                "password2": this.state.formFields.password2
             };
             this.props.actions.signUp(data);
         }
         
     }
-
-    onChange(e) {
-        return this.setState({ [e.target.name]: e.target.value });
-    }
     
     render() {
-        const { errors, password, isLoading } = this.state;
         var style = {backgroundColor: '#292931'};
         var style2 = {color: 'white'};
         return(
             <div id="login" className="login-bg">
-                <form onSubmit={this.onSignUp} onChange={this.onChange}>
+                <form onSubmit={this.onSave}>
                     <h2>Sign Up</h2>
                     <input
                         id="username"
                         type="text"
                         className="text-input"
                         placeholder="Username"
-                        ref="username"
-                        defaultValue=""
-                        error={this.state.errors.username}
-                        onChange={this.onChange}
+                        value={this.state.formFields.username}
+                        onChange={(e) => this.onUsernameFieldChange(e)}
                     />
-                    <p style={style2}>{this.state.errors.username}</p>
+                    <p style={style2}>{this.state.formErrors.username}</p>
                     <input
                         id="email"
                         type="text"
                         className="text-input"
                         placeholder="Email"
-                        ref="email"
-                        defaultValue=""
-                        error={this.state.errors.email}
-                        onChange={this.onChange}
+                        value={this.state.formFields.email}
+                        onChange={(e) => this.onEmailFieldChange(e)}
                     />
-                    <p style={style2}>{this.state.errors.email}</p>
+                    <p style={style2}>{this.state.formErrors.email}</p>
                     <input
                         id="password"
                         type="password"
                         className="text-input"
                         placeholder="Password"
-                        ref="password"
-                        defaultValue=""
-                        error={this.state.errors.password}
-                        onChange={this.onChange}
+                        value={this.state.formFields.password}
+                        onChange={(e) => this.onPasswordFieldChange(e)}
                     />
-                    <p style={style2}>{this.state.errors.password}</p>
+                    <p style={style2}>{this.state.formErrors.password}</p>
                     <input
                         id="password-confirm"
                         type="password"
                         className="text-input"
                         placeholder="Confirm Password"
-                        ref="password2"
-                        defaultValue=""
-                        error={this.state.errors.password2}
-                        onChange={this.onChange}
+                        value={this.state.formFields.password2}
+                        onChange={(e) => this.onPassword2FieldChange(e)}
                     />
-                    <p style={style2}>{this.state.errors.password2}</p>
-                    <input
-                        className="login-btn"
-                        type="submit"
-                        value="Sign Up"
-                        onChange={this.onChange}
-                    />
+                    <p style={style2}>{this.state.formErrors.password2}</p>
+                    <input type="submit" className="login-btn" value="Sign Up"/>
                 </form>
                 <p id="login-switch">Already have an account? Click <Link to={"/login"}>here</Link> to login</p>
             </div>
@@ -133,4 +196,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

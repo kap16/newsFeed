@@ -1,6 +1,7 @@
+const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
-const globalConfig = require('./config.json');
+const globalConfig = require('./config');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -14,10 +15,12 @@ var APP_DIR = path.resolve(__dirname, 'client')
 var ENTRY_DIR =  APP_DIR+ '/index.js'
 var outputPath = process.env.build ? BUILD_DIR : path.join(__dirname, OUTPUT_DIR);
 
+// MAIN CONFIGURATION
 config = {
-    //entry:["babel-polyfill", ENTRY_DIR],
-    entry:[ENTRY_DIR],
-    output: {
+    entry:[
+        ENTRY_DIR
+    ],
+    output:{
         path: outputPath,
         publicPath: '/',
         filename: 'bundle.js'
@@ -30,14 +33,10 @@ config = {
         new ExtractTextPlugin('style.css'),
         new HtmlWebpackPlugin({template: 'client/index.html'}),
         new OptimizeCssAssetsPlugin(),
-        new CleanWebpackPlugin([OUTPUT_DIR]),
-        new CopyWebpackPlugin([
-            {from:'client/img/',to:'img/'}
-        ]),
-        new webpack.DefinePlugin({ // needed for cross env to work
+        new webpack.DefinePlugin({ 
              VERSION: JSON.stringify(require("./package.json").version),
             'process.env': {
-                'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+                'NODE_ENV': JSON.stringify(process.env.NODE_ENV),// needed for cross env to work
                 'PORT': process.env.PORT
             }
         })
@@ -47,7 +46,7 @@ config = {
             {
                 test : /\.jsx?/,
                 exclude: /node_modules/,
-                loaders: ['react-hot-loader', 'babel-loader']
+                loaders: ['babel-loader']
             },
             {
                 test: /\.css$/,
@@ -70,10 +69,6 @@ config = {
             {
                 test: /\.html$/,
                 use: ['html-loader']
-            },
-            {
-                test: /\.json$/,
-                loader: 'json-loader'
             },
             {
                 test: /\.(jpg|png)$/,
@@ -102,18 +97,18 @@ config = {
     }
 };
 
-// BUILD
-if ((process.env.NODE_ENV === 'production' || process.env.PROD_ENV) || process.env.build) {
+// ENVIRONMENT BASED VARIABLES
+if (process.env.NODE_ENV === 'production' || process.env.PROD_ENV) {
     config.plugins.push(
         new OptimizeCssAssetsPlugin(),
         new UglifyJSPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
+        new CleanWebpackPlugin([OUTPUT_DIR])
     )
 }
 if (process.env.NODE_ENV === 'development'){
-    /*config.plugins.push(
+    config.plugins.push(
         new webpack.NoEmitOnErrorsPlugin()
-    )*/
+    );
     config.stats = {
         warnings: false
     };
@@ -121,7 +116,7 @@ if (process.env.NODE_ENV === 'development'){
         inline: true,
         contentBase: APP_DIR,
         compress: true,
-        port: 3001,
+        port: globalConfig.port,
         historyApiFallback: true,
 
         // dev warnings
@@ -131,7 +126,16 @@ if (process.env.NODE_ENV === 'development'){
             warnings: false,
             errors: false
         }
-    }
+    };
+}
+
+// MISC
+if (fs.existsSync(APP_DIR+ '/client/img')) {
+    config.plugins.push(
+        new CopyWebpackPlugin([
+            {from:'client/img/',to:'img/'}
+        ]),
+    );
 }
 
 module.exports = config;

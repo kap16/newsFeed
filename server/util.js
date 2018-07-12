@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 const moment = require('moment');
-const logDir = __dirname+"/logs";
+const jwt = require('jsonwebtoken');
+const config = require('../config');
 
 module.exports = {
     /** 
