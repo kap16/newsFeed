@@ -1,5 +1,6 @@
 const util = require('../util');
 const Source = require('../models/source');
+const jwtDecode = require('jwt-decode');
 
 module.exports = {
     
@@ -10,6 +11,7 @@ module.exports = {
      */
     getSource(req, res){
         var data = req.body
+        var decoded = jwtDecode(req.get('Authorization'));
         Source.findOne({id: data._id},function(err,source){
             if (err){
                 util.logError(err);
@@ -26,13 +28,15 @@ module.exports = {
      */
     getSources(req, res){
         var decoded = jwtDecode(req.get('Authorization'));
-        console.log(decoded);
-        Source.find({createdBy: decoded.user.id},function(err,sources){
+        console.log("decoded: ",decoded);
+        Source.find({createdBy: decoded.id},function(err,sources){
             if (err){
                 util.logError(err);
             }
+            var resBody = {sources: sources};
+            console.log(resBody);
             util.logSuccess("Success");
-            res.send({sources: sources});
+            res.send(resBody);
         });
     },
 
@@ -48,6 +52,7 @@ module.exports = {
         if (decoded.user.id == undefined){
             res.send({message: 'unauthorized: cannot find user'});
         }else{
+            util.log("found user");
             Source.find({link: data.link},function(err,sources){
                 if (err){
                     util.logError(err);
@@ -81,15 +86,35 @@ module.exports = {
      * @param req request object
      * @param res response object
      */
-    update(req, res){
+    updateSource(req, res){
         var data = req.body;
-        Source.find({}, function(err,sources){
-            if (err){
-                util.logError(err);
-            }else{
-                
-            }
-        })
+        var decoded = jwtDecode(req.get('Authorization'));
+        console.log(decoded);
+        if (decoded.id == undefined){
+            res.send({message: 'unauthorized: cannot find user'});
+        }else{
+            Source.findOne({'createdBy':decoded.id,_id: req.params.id}, function(err,source){
+                if (err){
+                    util.logError(err);
+                }else{
+                    util.log("Gonna update a source");
+                    var currTime = new Date().toISOString();
+                    source.set({
+                        title: data.title,
+                        description: data.desc, 
+                        link: data.link,
+                        updatedOn: currTime
+                    });
+
+                    source.save(function (err, updatedSource) {
+                        if (err) console.log(err);
+                        console.log(updatedSource);
+                        var resBody = {source: updatedSource};
+                        res.send(resBody);
+                    });
+                }
+            })
+        }
     },
 
     /** 
@@ -97,13 +122,13 @@ module.exports = {
      * @param req request object
      * @param res response object
      */
-    delete(req, res){
-        var data = req.body;
-        Source.find({}, function(err,sources){
+    deleteSource(req, res){
+        Source.find({_id: req.params.id}, function(err,sources){
             if (err){
                 util.logError(err);
             }else{
-                
+                util.logSuccess("Deleted a list")
+                res.send(list);
             }
         })
     }

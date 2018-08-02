@@ -16,6 +16,14 @@ export function showAddSourceModal(){
     }
 }
 
+export function showEditSourceModal(){
+    return function(dispatch){
+        dispatch({ 
+            type: types.EDIT_SOURCE,
+        });
+    }
+}
+
 export function showModal(){
     return function(dispatch){
         dispatch({ 

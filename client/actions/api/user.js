@@ -4,7 +4,7 @@ import * as type from '../types';
 
 export function signUp(data){
     return function(dispatch){
-        var url = config.api+"/signup"
+        var url = config.server.url+"/signup"
         fetch(url,{
             method: "POST", 
             body: JSON.stringify(data),  
@@ -28,7 +28,7 @@ export function signUp(data){
 
 export function loginUser(data){
     return function(dispatch){
-        var url = config.api+"/login"
+        var url = config.server.url+"/login"
         fetch(url,{
             method: "POST", 
             body: JSON.stringify(data),  

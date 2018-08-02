@@ -5,7 +5,6 @@ import { Router, Route, browserHistory } from 'react-router';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-const fetch = require("node-fetch");
 
 // Importing files
 import style from 'css/default/index.css';

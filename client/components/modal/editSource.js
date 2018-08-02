@@ -1,16 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import style from '../../css/default/modal.css';
-import { toast } from 'react-toastify';
 const config = require('../../../config');
 
 export default class EditSource extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            title: '',
-            link: '',
-            desc: '',
+            title: this.props.sItem.title,
+            link: this.props.sItem.link,
+            desc: this.props.sItem.desc,
             errors:{
                 title: false,
                 link: false,
@@ -19,7 +18,7 @@ export default class EditSource extends React.Component {
         };
 
         this.validate = this.validate.bind(this);
-        this.canBeSubmitted = this.canBeSubmitted.bind(this);
+        this.canSubmit = this.canSubmit.bind(this);
         this.closeModal = this.closeModal.bind(this);
     }
 
@@ -27,38 +26,29 @@ export default class EditSource extends React.Component {
         this.props.onClose && this.props.onClose(e);
     }
 
-    onAdd(e){
-        if (!this.canBeSubmitted()) {
+    onEdit(e){
+        if (!this.canSubmit()) {
             e.preventDefault();
-            toast.error("Field errors", {
-                position: toast.POSITION.TOP_RIGHT
-            });
+            console.log("Field errors")
         }else{
-            var url = config.api+"/source/"
+            var url = config.server.url+"/source/"+this.props.sItem._id
             var data = {
                 "title": this.state.title,
                 "link": this.state.link,
                 "desc": this.state.desc
             }
             fetch(url,{
-                method: "PUT", 
+                method: "POST", 
                 body: JSON.stringify(data),  
                 headers: {
+                    "Authorization": sessionStorage.getItem(config.sessionId),
                     "Content-Length": Buffer.byteLength(data),
                     "Content-Type": "application/json"
                 }
             })
+            .then(res => res.json())
             .then(function(res){
-                console.log(res);
-                if(res.status === 200){
-                    toast.success("Source was added", {
-                        position: toast.POSITION.TOP_RIGHT
-                    });
-                }else{
-                    toast.error("Source was not added", {
-                        position: toast.POSITION.TOP_RIGHT
-                    });
-                }
+                console.log("Source was saved");
             })
             .then(this.closeModal)
             .catch(function(e){
@@ -87,10 +77,10 @@ export default class EditSource extends React.Component {
         };
     }
 
-    canBeSubmitted() {
-        const errors = this.validate(this.state.title, this.state.link);
+    canSubmit(){
+        const errors = this.validate(this.state.title, this.state.link)
         const isDisabled = Object.keys(errors).some(x => errors[x]);
-        return !isDisabled;
+        return !(errors & isDisabled);
     }
 
     render(){
@@ -103,7 +93,7 @@ export default class EditSource extends React.Component {
             <div className="modal-backdrop">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h2>Add Source</h2>
+                        <h2>Edit Source</h2>
                     </div>
                     <div className="modal-body">
                         <input               
@@ -128,8 +118,8 @@ export default class EditSource extends React.Component {
                     <div className="modal-footer">
                         <button
                             disabled={isDisabled} 
-                            onClick={(e) => { this.onAdd(e)} }>
-                            Add
+                            onClick={(e) => { this.onEdit(e)} }>
+                            Save
                         </button>
                         <button onClick={this.closeModal}>
                             Close

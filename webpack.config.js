@@ -106,10 +106,16 @@ if (process.env.NODE_ENV === 'production' || process.env.PROD_ENV) {
     )
 }
 if (process.env.NODE_ENV === 'development'){
+    config.watch= true;
+    config.watchOptions= {
+        ignored: ['/build/','/server/', '/node_modules/']
+    }
     config.plugins.push(
+        new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin()
+        
     );
-    config.stats = {
+    /*config.stats = {
         warnings: false
     };
     config.devServer = { 
@@ -126,7 +132,7 @@ if (process.env.NODE_ENV === 'development'){
             warnings: false,
             errors: false
         }
-    };
+    };*/
 }
 
 // MISC

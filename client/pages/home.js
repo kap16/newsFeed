@@ -1,10 +1,8 @@
 // Importing Libraries
 import React from 'react';
-import { Link } from 'react-router';
-import { ToastContainer, toast } from 'react-toastify';
 import { bindActionCreators } from 'redux';  
 import { connect } from 'react-redux';
-const fetch = require("node-fetch");
+//const fetch = require("node-fetch");
 
 // Importing files
 import * as actions from '../actions/index';
@@ -20,20 +18,29 @@ class Home extends React.Component{
     }
 
     componentDidMount(){
-        var url = config.api+"/items";
+        var url = config.server.url+"/items";
         fetch(url,{
             method: "GET",
             headers: {
                 "Authorization": sessionStorage.getItem(config.sessionId),
-                "Content-Type": "application/json",
+                "Content-Type": "application/json"
             }
         })
-        .then((res) => res.json())
-        .then(function(output){
-            this.setState({ items: output.items });
-            console.log(this.state)
+        .then(function(res){ 
+            console.log(res)
+            return JSON.parse(JSON.stringify(res))
+            //return res.json(); 
         })
-        .catch(function(e){ console.log(e);}); 
+        .then(function(output){
+            console.log(output);
+            //this.setState({ items: output.items });
+            //console.log(this.state)
+        })
+        .catch(function(e){ console.log(e);});
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextState !== this.state;
     }
 
     onChange(e){
@@ -62,7 +69,6 @@ class Home extends React.Component{
         return( 
             <div className="main-body">
                 <Navbar/>
-                <ToastContainer autoClose={8000}/>
                 <div className="left-side">
                     <p style={{padding:"10px"}}>Hello</p>
                 </div>

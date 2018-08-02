@@ -1,7 +1,5 @@
 // Importing Libraries
 import React from 'react';
-import {Link} from 'react-router';
-import { ToastContainer, toast } from 'react-toastify';
 import {bindActionCreators} from 'redux';  
 import {connect} from 'react-redux';
 
@@ -35,8 +33,8 @@ class Navbar extends React.Component{
                             <nav>
                                 <a href="/sources">Sources</a>
                                 <a href="/settings">Settings</a>
-                                <a href="#" onClick={this.props.actions.showModal}>Show Modal</a>
-                                {
+                                {/*<a href="#" onClick={this.props.actions.showModal}>Show Modal</a>
+                                
                                     this.props.modal.active && this.props.modal.type===actions.MODAL?
                                     <Modal
                                         onClose={this.props.actions.hideModal} 
@@ -44,7 +42,7 @@ class Navbar extends React.Component{
                                         This message is from Modal!
                                     </Modal>
                                     :null
-                                }
+                                */}
                                 <a href="#" onClick={this.props.actions.showAddSourceModal}>Add Source</a>
                                 {
                                     this.props.modal.active && this.props.modal.type===actions.ADD_SOURCE?

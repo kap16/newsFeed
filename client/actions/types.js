@@ -1,11 +1,16 @@
 // This file is needed for reducers
 
+// user auth
 export const AUTH = 'AUTH'; 
 export const UNAUTH = 'UNAUTH';
 
 // news feed stuff
 export const GET_ITEM = 'GET_ITEM';
 export const GET_ITEMS = 'GET_ITEMS';
+
+// sources stuff
+export const GET_SOURCE = 'GET_SOURCE';
+export const GET_SOURCES = 'GET_SOURCES';
 
 // Modals
 export const MODAL = 'MODAL';

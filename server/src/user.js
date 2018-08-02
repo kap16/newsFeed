@@ -84,8 +84,8 @@ module.exports = {
         //var err = req.validationErrors();
         var resObj;
 
-        console.log("login: ",req.body);
-        req.logIn(req.body, function(err) {
+        console.log("login: ",req.user);
+        req.logIn(req.user, function(err) {
             if (err) {
                 util.logError(err)
                 console.log(err);
@@ -95,15 +95,16 @@ module.exports = {
                 };
             }
             else{
-                let user = {
-                    id: req.body._id,
-                    username: req.body.username
-                }
-                let token = util.generateToken(user);
-                resObj = {
-                    token: token,
-                    user: user
+                var resBody = {
+                    user: {
+                        id: req.user._id,
+                        username: req.user.username
+                    }
                 };
+                var token = util.generateToken(resBody.user);
+
+                resObj = { body:resBody, token:token}
+                res.status = 200;
                 util.logSuccess("Successful login");
             } 
             res.send(resObj);

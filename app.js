@@ -7,33 +7,6 @@ const passport = require('passport');
 const cors = require('cors');
 const util = require('./server/util');
 
-// setting up express
-const app = express();
-app.use(express.static(__dirname + '/build'));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-require('./server/passport')(passport);
-app.use(passport.initialize());
-app.use(passport.session());
-app.get('*', function(req, res) {
-    res.sendFile(path.resolve(__dirname)+'/build/index.html');
-});
-
-if(process.env.NODE_ENV === 'development'){
-    util.log('Development Mode...');
-    /*const webpack = require('webpack');
-    const webpackConfig = require('./webpack.config');
-    const compiler = webpack(webpackConfig);
-    app.use(require("webpack-dev-middleware")(compiler, {
-        noInfo: true, publicPath: webpackConfig.output.publicPath
-    }));
-    app.use(require("webpack-hot-middleware")(compiler));*/
-}
-else{
-    app.options('*', cors())
-    util.log('CORS-enabled web server');
-}
-
 // handle connection to mongodb
 mongoose.Promise = global.Promise;
 mongoose.connect(config.mongoURI,config.mongoOpts);
@@ -52,25 +25,51 @@ mongoose.connection.on('disconnected', function () {
     util.logWarning('Mongoose default connection disconnected'); 
 });
 
+// setting up express
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+require('./server/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+
+// API routes
+app.use(config.server.routePrefix, require('./server/routes/user'));
+app.use(config.server.routePrefix, require('./server/routes/source'));
+app.use(config.server.routePrefix, require('./server/routes/item'));
+
+// ENV STUFF
+if(process.env.NODE_ENV === 'development'){
+    util.log('Development Mode...');
+    app.options('*', cors())
+    util.log('CORS-enabled web server');
+}
+
+// If Application only needs the API
+if(process.env.API_ONLY === 'true'){
+    util.log('Development Mode...');
+    app.options('*', cors())
+    util.log('CORS-enabled web server');
+}
+else{
+    app.use(express.static(__dirname + '/build'));
+    app.get('*', function(req, res) {
+        res.sendFile(path.resolve(__dirname)+'/build/index.html');
+    });    
+}
+
 // port listening
-app.set('port', (process.env.port || config.port));
+app.set('port', (process.env.port || config.server.port));
 
 // setting headers
 app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', config.client);
+    res.header('Access-Control-Allow-Origin', config.client.url);
     res.header('Content-Type','application/json');
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.header('Access-Control-Allow-Headers',"Content-Type, authorization");
-    res.header('Access-Control-Allow-Headers',"Origin, X-Requested-With, Content-Type, Accept");
     res.header('Access-Control-Allow-Credentials', true);
     next();
 });
-
-// routes
-const routePrefix = '/api';
-app.use(routePrefix, require('./server/routes/user'));
-app.use(routePrefix, require('./server/routes/source'));
-app.use(routePrefix, require('./server/routes/item'));
 
 // error handling middleware
 app.use(function(err,req,res,next){

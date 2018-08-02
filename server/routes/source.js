@@ -18,13 +18,13 @@ router.get('/source/:id', function(req,res){
 });
 
 // updates database with new entries
-router.put('/source/:id', function(req,res){
-    source.update(req,res);
+router.post('/source/:id', function(req,res){
+    source.updateSource(req,res);
 });
 
 // removes a source 
 router.delete('/source', function(req,res){
-    source.delete(req,res)
+    source.deleteSource(req,res)
 });
 
 module.exports = router;

@@ -10,13 +10,13 @@
 .left-side {
     float: left;
     width: 16%;
-    background-color: yellow;
+    background-color: grey;
 }
 
 .right-side {
     float: right;
     width: 84%;
-    background-color: green;
+    background-color: white;
 }
 
 .item {

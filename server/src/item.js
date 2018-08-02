@@ -1,5 +1,6 @@
 const util = require('../util');
 const Item = require('../models/item');
+const jwtDecode = require('jwt-decode');
 
 module.exports = {
     
@@ -9,7 +10,6 @@ module.exports = {
      * @param res response object
      */
     getItem(req, res){
-        var data = req.body
         var decoded = jwtDecode(req.get('Authorization'));
         Item.findOne({id: data._id,createdBy:decoded.user._id},function(err,items){
             if (err){
@@ -26,15 +26,25 @@ module.exports = {
      * @param res response object
      */
     getItems(req, res){
-        var data = req.body
         var decoded = jwtDecode(req.get('Authorization'));
-        Item.find({createdBy:decoded.user._id}).sort({pubDate: -1}).limit(data.pagination).exec(function(err,items){
-            if (err){
-                util.logError(err);
-            }else{
-                res.send({items: items});
-            }
-        });
+        console.log(decoded);
+        if (decoded.user.id == undefined){//|| !Validate.doesUserExist(decoded.user.id)){
+            res.send({message: 'unauthorized: cannot get lists'});
+        }else{
+            Item.find({createdBy:decoded.user._id})
+            .sort({pubDate: -1})
+            //.limit(data.pagination)
+            .exec(function(err,items){
+                if (err){
+                    util.logError(err);
+                }else{
+                    var resObj = JSON.stringify({
+                        items: items
+                    });
+                    res.send(resObj);
+                }
+            });
+        }
     },
 
     /** 

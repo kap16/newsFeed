@@ -1,10 +1,14 @@
 // must corespond to a reducer in reducers folder
-module.exports = {
+const config = require('../config');
+
+const initState = {
     test: null,
     modal: {
         type: "",
         active: false
     },
     items: [],
-    session: !!sessionStorage.jwt
+    session: !!sessionStorage.getItem(config.sessionId.toString())
 };
+
+module.exports = initState;

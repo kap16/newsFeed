@@ -5,7 +5,7 @@ import * as types from '../types';
 module.exports = {  
     getItem(data){
         return function(dispatch){
-            var url = config.api+"/item/"+data.itemId
+            var url = config.server.url+"/item/"+data.itemId
             fetch(url,{
                 method: "GET", 
                 headers: {
@@ -34,7 +34,7 @@ module.exports = {
 
     getShows(data){
         return function(dispatch){
-            var url = config.api+"/shows"
+            var url = config.server.url+"/shows"
             fetch(url,{
                 method: "GET", 
                 headers: {

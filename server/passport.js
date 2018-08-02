@@ -5,10 +5,9 @@ const User = require('./models/user');
 
 module.exports = function(passport){
     // local strategy
-    passport.use(new LocalStrategy({ "passReqToCallback": true },
+    passport.use(new LocalStrategy({ passReqToCallback: true },
         function(req, username, password, done){
             // Match username
-            util.log("Auth" + username);
             let query = {username:username};
             User.findOne(query, function(err, user){
                 if(err) util.logError(err);

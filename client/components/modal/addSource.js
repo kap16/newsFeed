@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import style from '../../css/default/modal.css';
-import { toast } from 'react-toastify';
 const config = require('../../../config');
 
 export default class AddSource extends React.Component {
@@ -19,7 +18,6 @@ export default class AddSource extends React.Component {
         };
 
         this.validate = this.validate.bind(this);
-        this.canBeSubmitted = this.canBeSubmitted.bind(this);
         this.closeModal = this.closeModal.bind(this);
     }
 
@@ -28,13 +26,11 @@ export default class AddSource extends React.Component {
     }
 
     onAdd(e){
-        if (!this.canBeSubmitted()) {
+        if (!this.canSubmit()) {
             e.preventDefault();
-            toast.error("Field errors", {
-                position: toast.POSITION.TOP_RIGHT
-            });
+            console.log("Field errors");
         }else{
-            var url = config.api+"/source"
+            var url = config.server.url+"/source"
             var data = {
                 "title": this.state.title,
                 "link": this.state.link,
@@ -44,20 +40,17 @@ export default class AddSource extends React.Component {
                 method: "POST", 
                 body: JSON.stringify(data),  
                 headers: {
+                    "Authorization": sessionStorage.getItem(config.sessionId),
                     "Content-Length": Buffer.byteLength(data),
                     "Content-Type": "application/json"
                 }
             })
+            .then(out => out.json())
             .then(function(res){
-                console.log(res);
                 if(res.status === 200){
-                    toast.success("Source was added", {
-                        position: toast.POSITION.TOP_RIGHT
-                    });
+                    console.log("Source was added")
                 }else{
-                    toast.error("Source was not added", {
-                        position: toast.POSITION.TOP_RIGHT
-                    });
+                    console.log("Source was not added")
                 }
             })
             .then(this.closeModal)
@@ -87,10 +80,10 @@ export default class AddSource extends React.Component {
         };
     }
 
-    canBeSubmitted() {
-        const errors = this.validate(this.state.title, this.state.link);
+    canSubmit(){
+        const errors = this.validate(this.state.title, this.state.link)
         const isDisabled = Object.keys(errors).some(x => errors[x]);
-        return !isDisabled;
+        return !(errors & isDisabled);
     }
 
     render(){

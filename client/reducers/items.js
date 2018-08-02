@@ -5,7 +5,7 @@ const itemsReducer = function(items = initialState.items, action) {
     switch(action.type) {
         case types.GET_ITEM:
             return Object.assign(item, action.payload);    
-        case types.GET_ITEM:
+        case types.GET_ITEMS:
             return Object.assign(items, action.payload);
         default: 
             return items;

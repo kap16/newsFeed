@@ -1,29 +1,27 @@
-// Importing Libraries
 import React from 'react';
-import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';  
 import {connect} from 'react-redux';
 const fetch = require("node-fetch");
 
-// Importing files
 import * as actions from '../actions/index';
-const config = require('../../config');
+import EditSource from '../components/modal/editSource';
 import Navbar from '../components/navbar';
 import SourceItem from '../components/list/sourceItem';
+const config = require('../../config');
 
 class Sources extends React.Component{
     constructor(props){
         super(props);
+
         this.state = {
             sources: []
         };
 
         this.renderSources = this.renderSources.bind(this);
-        this.showEditSourceModal = this.showEditSourceModal.bind(this);
     }
 
     componentDidMount(){
-        var url = config.api+"/sources";
+        var url = config.server.url+"/sources";
         fetch(url,{
             method: "GET",
             headers: {
@@ -31,32 +29,36 @@ class Sources extends React.Component{
                 "Content-Type": "application/json",
             }
         })
-        //.then((res) => res.json())
+        .then((res) => res.json())
         .then(function(output){
-            console.log("output",output);
-            console.log(url === output.url);
             this.setState({ sources: output.sources });
-        })
+        }.bind(this))
         .catch(function(e){ console.log(e);}); 
+    }
+
+    componentWillUnmount(){
+
     }
     
     renderSources(){
         var sources = this.state.sources;
         if(sources.length > 0){
             return (
-                <table id="sources" className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Source</th>
-                            <th>Added on</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {sources.map((source, i)=>( 
-                            <SourceItem key={i} source={source}/>
-                        ))}
-                    </tbody>
-                </table>
+                <div>
+                    <table id="sources" className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Source</th>
+                                <th>Added on</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {sources.map((source, i)=>( 
+                                <SourceItem key={i} source={source}/>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             );
         }else{
             return( 
@@ -65,25 +67,10 @@ class Sources extends React.Component{
         }
     }
 
-    showEditSourceModal(){
-        this.setState({
-            ...this.state,
-            modalActive: !this.state.modalActive,
-            modal: (this.state.modalActive ? "" : "Edit Source") 
-        });
-    }
-
     render(){
         return( 
             <div>
                 <Navbar/>
-                {
-                    this.state.modalActive && this.state.modal==="Edit Source"?
-                    <EditSource
-                        onClose={this.showEditSourceModal} 
-                        show={this.state.modalActive}/>
-                    :null
-                }
                 <div>
                     {this.state.sources === undefined ? <p>Loading</p> : this.renderSources() }
                 </div>
@@ -102,5 +89,5 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(Sources);
+export default connect(mapStateToProps, mapDispatchToProps)(Sources);
 

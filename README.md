@@ -13,9 +13,8 @@ An rss feed application.
 ### Contributing
 Contributions are welcome.
 
-#### Running tests
-* ```npm run dev``` will start an instance of the app using webpack-dev-server running on port 3001. Please use this command for debugging against UI and Graphical changes in the web client.
-* ```npm run debug``` will start an instance of the app, building the app using webpack and then serving it using express running on port 3001. Please use this command for debugging against changes to the express application (found in the server folder) and server requests.
+#### Running Development environment
+* ```npm run dev``` will start an instance of the app running on port http://localhost:3001.
 
 ### Support
 Please refer the [issue tracker](https://github.com/kap16/newsFeed/issues) for reporting problems and requesting new features.
