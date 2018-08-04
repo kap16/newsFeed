@@ -1,8 +1,9 @@
 // This file is needed for reducers
 
-// user auth
+// user stuff
 export const AUTH = 'AUTH'; 
 export const UNAUTH = 'UNAUTH';
+export const SETTINGS = 'SETTINGS';
 
 // news feed stuff
 export const GET_ITEM = 'GET_ITEM';

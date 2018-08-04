@@ -7,6 +7,8 @@ const rootReducer = combineReducers({
     test: require('./test'), 
     modal: require('./modal'),
     items: require('./items'),
+    sources: require('./sources'),
+    settings: require('./settings'),
     session: require('./session')
 });
 

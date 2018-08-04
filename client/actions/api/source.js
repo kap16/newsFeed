@@ -2,6 +2,9 @@ const fetch = require("node-fetch");
 const config = require("../../../config");
 import * as type from '../types';
 
+/** 
+ * gets all the user's sources from the database
+ */
 export function getSources(data){
     return function(dispatch){
         var url = config.server.url+"/sources"
@@ -14,7 +17,7 @@ export function getSources(data){
         })
         .then(res => res.json())
         .then(function(res){
-            //dispatch({ type: type.GET_SOURCES });
+            dispatch({ type: type.GET_SOURCES, payload: res.sources });
             console.log(res);
         })
         .catch(function(e){

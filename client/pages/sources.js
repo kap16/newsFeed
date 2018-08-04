@@ -21,23 +21,7 @@ class Sources extends React.Component{
     }
 
     componentDidMount(){
-        var url = config.server.url+"/sources";
-        fetch(url,{
-            method: "GET",
-            headers: {
-                "Authorization": sessionStorage.getItem(config.sessionId),
-                "Content-Type": "application/json",
-            }
-        })
-        .then((res) => res.json())
-        .then(function(output){
-            this.setState({ sources: output.sources });
-        }.bind(this))
-        .catch(function(e){ console.log(e);}); 
-    }
-
-    componentWillUnmount(){
-
+        this.props.actions.getSources;
     }
     
     renderSources(){

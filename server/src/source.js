@@ -28,7 +28,6 @@ module.exports = {
      */
     getSources(req, res){
         var decoded = jwtDecode(req.get('Authorization'));
-        console.log("decoded: ",decoded);
         Source.find({createdBy: decoded.id},function(err,sources){
             if (err){
                 util.logError(err);

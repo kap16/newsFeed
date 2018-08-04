@@ -55,7 +55,7 @@
     "webpack-dev-server": "2.7.1"
   },
   "scripts": {
-    "dev": "concurrently \"cross-env NODE_ENV=development webpack --config webpack.config.js\" \"cross-env NODE_ENV=development nodemon app.js\"",
+    "dev": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js\" \"cross-env NODE_ENV=development nodemon app.js\"",
     "dev-client": "cross-env NODE_ENV=development webpack --watch --config webpack.config.js",
     "dev-server": "cross-env NODE_ENV=development nodemon app.js",
     "server": "NODE_ENV=production API_ONLY=true node app.js",

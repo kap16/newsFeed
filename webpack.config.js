@@ -104,25 +104,28 @@ if (process.env.NODE_ENV === 'production' || process.env.PROD_ENV) {
         new UglifyJSPlugin(),
         new CleanWebpackPlugin([OUTPUT_DIR])
     )
+    config.stats = {
+        warnings: false
+    };
 }
 if (process.env.NODE_ENV === 'development'){
     config.watch= true;
     config.watchOptions= {
         ignored: ['/build/','/server/', '/node_modules/']
     }
+    config.stats = {
+        warnings: false
+    };
     config.plugins.push(
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin()
         
     );
-    /*config.stats = {
-        warnings: false
-    };
     config.devServer = { 
         inline: true,
         contentBase: APP_DIR,
         compress: true,
-        port: globalConfig.port,
+        port: globalConfig.client.port,
         historyApiFallback: true,
 
         // dev warnings
@@ -132,7 +135,7 @@ if (process.env.NODE_ENV === 'development'){
             warnings: false,
             errors: false
         }
-    };*/
+    };
 }
 
 // MISC

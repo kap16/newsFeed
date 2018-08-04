@@ -19,9 +19,11 @@ const config = require('../config');
 
 // create redux store
 const store = createStore(rootReducer, applyMiddleware(thunk));
-store.subscribe(() => {
-    console.log("store updated", store.getState());
-})
+if(process.env.NODE_ENV === 'development'){
+    store.subscribe(() => {
+        console.log("store updated", store.getState());
+    })
+}
 
 // user auth
 function requireAuth(nextState, replace) {

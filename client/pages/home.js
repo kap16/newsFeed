@@ -26,15 +26,9 @@ class Home extends React.Component{
                 "Content-Type": "application/json"
             }
         })
-        .then(function(res){ 
-            console.log(res)
-            return JSON.parse(JSON.stringify(res))
-            //return res.json(); 
-        })
+        .then(res => res.json())
         .then(function(output){
-            console.log(output);
-            //this.setState({ items: output.items });
-            //console.log(this.state)
+            console.log("items",output);
         })
         .catch(function(e){ console.log(e);});
     }
@@ -65,7 +59,6 @@ class Home extends React.Component{
     }
 
     render(){
-        console.log(this.props);
         return( 
             <div className="main-body">
                 <Navbar/>

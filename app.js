@@ -27,49 +27,48 @@ mongoose.connection.on('disconnected', function () {
 
 // setting up express
 const app = express();
+app.options('*', cors())
+util.log('CORS-enabled web server');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 require('./server/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-// API routes
-app.use(config.server.routePrefix, require('./server/routes/user'));
-app.use(config.server.routePrefix, require('./server/routes/source'));
-app.use(config.server.routePrefix, require('./server/routes/item'));
-
-// ENV STUFF
-if(process.env.NODE_ENV === 'development'){
-    util.log('Development Mode...');
-    app.options('*', cors())
-    util.log('CORS-enabled web server');
-}
-
-// If Application only needs the API
-if(process.env.API_ONLY === 'true'){
-    util.log('Development Mode...');
-    app.options('*', cors())
-    util.log('CORS-enabled web server');
-}
-else{
-    app.use(express.static(__dirname + '/build'));
-    app.get('*', function(req, res) {
-        res.sendFile(path.resolve(__dirname)+'/build/index.html');
-    });    
-}
-
-// port listening
-app.set('port', (process.env.port || config.server.port));
-
 // setting headers
 app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', config.client.url);
+    res.header('Access-Control-Allow-Origin','*');
     res.header('Content-Type','application/json');
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.header('Access-Control-Allow-Headers',"Content-Type, authorization");
     res.header('Access-Control-Allow-Credentials', true);
     next();
 });
+
+// API routes
+app.use(config.server.routePrefix, require('./server/routes/user'));
+app.use(config.server.routePrefix, require('./server/routes/source'));
+app.use(config.server.routePrefix, require('./server/routes/item'));
+
+
+if(process.env.API_ONLY === 'true'){
+    // If Application only needs the API
+    util.log('\"API Only\" Mode...');
+}
+else{
+    // for Web client as well as api
+    if(process.env.NODE_ENV === 'development'){
+        util.log('Development Mode...');
+    }else{
+        app.use(express.static(__dirname + '/build'));
+        app.get('*', function(req, res) {
+            res.sendFile(path.resolve(__dirname)+'/build/index.html');
+        });  
+    }
+}
+
+// port listening
+app.set('port', (process.env.port || config.server.port));
 
 // error handling middleware
 app.use(function(err,req,res,next){

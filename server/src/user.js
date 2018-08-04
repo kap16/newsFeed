@@ -2,6 +2,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const util = require('../util');
+const jwtDecode = require('jwt-decode');
 
 module.exports = {
     /** 
@@ -36,8 +37,12 @@ module.exports = {
                 username:username,
                 email:email, 
                 password:password,
+                settings:{
+                    defaultPagination: 20
+                },
                 createdOn: new Date().toISOString()
             });
+
             bcrypt.genSalt(10, function(err,salt){
                 if(err){
                     util.logError('error during salt generation');
@@ -48,7 +53,7 @@ module.exports = {
                         util.logError('error during hashing');
                         console.log(err);
                     }
-                    newUser.password = hash;
+                    newUser.password = hash;                  
                     newUser.save(function(error){
                         if(error){
                             console.log(error);
@@ -58,8 +63,6 @@ module.exports = {
                                 user:{
                                     id: newUser._id,
                                     username: newUser.username,
-                                    password: newUser.password,
-                                    createdOn: newUser.createdOn
                                 },
                                 statusCode: res.statusCode,
                             };
@@ -112,15 +115,40 @@ module.exports = {
     },
 
     /** 
+     * get a user's configuration
+     * @param req request object
+     * @param res response object
+     */
+    getUser(req, res){
+        var decoded = jwtDecode(req.get('Authorization'));
+        console.log(decoded);
+        User.findOne({_id: decoded.id},function(err,user){
+            if (err){
+                util.logError(err);
+            }else{
+                var settings;
+                if(user.settings === null || user.settings === undefined){
+                    settings = {};
+                }else{
+                    settings = user.settings
+                }
+                res.send({settings:settings});
+            }
+        });
+    },
+
+    /** 
      * update a user in the db
      * @param req request object
      * @param res respomse object
      */
     updateUser(req,res){
-        User.findByIdAndUpdate({_id: req.params.id},req.body).then(function(user){
-            User.findOne({_id: req.params.id}).then(function(user){
-                res.send(user);
-            });
+        User.update({_id: req.params.id},
+            {'$set':{
+                'settings':req.body
+            }}
+        ).then(function(user){
+            res.send(user);
         })
     },
 

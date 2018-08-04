@@ -10,9 +10,13 @@ config.client.port=3001;
 config.client.url="http://"+config.host+":"+config.client.port;
 
 config.server = {};
-config.server.port=config.client.port;
+if(process.env.NODE_ENV==='development'){
+    config.server.port=3002;
+}else{
+    config.server.port=config.client.port;
+}
 config.server.routePrefix="/api";
-config.server.url=config.client.url+config.server.routePrefix;
+config.server.url="http://"+config.host+":"+config.server.port+config.server.routePrefix;
 
 config.mongoURI="mongodb://localhost/news-feed-db";
 config.mongoOpts = {

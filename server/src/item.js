@@ -11,7 +11,7 @@ module.exports = {
      */
     getItem(req, res){
         var decoded = jwtDecode(req.get('Authorization'));
-        Item.findOne({id: data._id,createdBy:decoded.user._id},function(err,items){
+        Item.findOne({id: data._id,createdBy:decoded._id},function(err,items){
             if (err){
                 util.logError(err);
             }else{
@@ -27,11 +27,10 @@ module.exports = {
      */
     getItems(req, res){
         var decoded = jwtDecode(req.get('Authorization'));
-        console.log(decoded);
-        if (decoded.user.id == undefined){//|| !Validate.doesUserExist(decoded.user.id)){
+        if (decoded.id == undefined){
             res.send({message: 'unauthorized: cannot get lists'});
         }else{
-            Item.find({createdBy:decoded.user._id})
+            Item.find({createdBy:decoded.id})
             .sort({pubDate: -1})
             //.limit(data.pagination)
             .exec(function(err,items){
