@@ -121,7 +121,6 @@ module.exports = {
      */
     getUser(req, res){
         var decoded = jwtDecode(req.get('Authorization'));
-        console.log(decoded);
         User.findOne({_id: decoded.id},function(err,user){
             if (err){
                 util.logError(err);
@@ -140,7 +139,7 @@ module.exports = {
     /** 
      * update a user in the db
      * @param req request object
-     * @param res respomse object
+     * @param res response object
      */
     updateUser(req,res){
         User.update({_id: req.params.id},
@@ -148,14 +147,18 @@ module.exports = {
                 'settings':req.body
             }}
         ).then(function(user){
-            res.send(user);
+            var resBody = {
+                user: user
+            }
+            console.log(resBody)
+            res.send(resBody);
         })
     },
 
     /** 
      * delete a user from the database
      * @param req request object
-     * @param res respomse object
+     * @param res response object
      */
     deleteUser(req,res,next){
         //console.log(req.params.id);

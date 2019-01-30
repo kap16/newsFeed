@@ -55,11 +55,12 @@
     "webpack-dev-server": "2.7.1"
   },
   "scripts": {
-    "dev": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js\" \"cross-env NODE_ENV=development nodemon app.js\"",
+    "dev": "concurrently \"cross-env NODE_ENV=development MODE=double webpack-dev-server --config webpack.config.js\" \"cross-env NODE_ENV=development MODE=double nodemon app.js\"",
+    "dev2": "cross-env NODE_ENV=development webpack --config webpack.config.js && cross-env NODE_ENV=development MODE=single nodemon app.js",
     "dev-client": "cross-env NODE_ENV=development webpack --watch --config webpack.config.js",
     "dev-server": "cross-env NODE_ENV=development nodemon app.js",
-    "server": "NODE_ENV=production API_ONLY=true node app.js",
-    "start": "NODE_ENV=production node app.js"
+    "server": "NODE_ENV=production MODE=apiOnly node app.js",
+    "start": "NODE_ENV=production webpack --config webpack.config.js && cross-env NODE_ENV=production MODE=single node app.js"
   },
   "nodemonConfig": {
     "watch": [

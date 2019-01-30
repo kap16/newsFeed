@@ -51,7 +51,7 @@ app.use(config.server.routePrefix, require('./server/routes/source'));
 app.use(config.server.routePrefix, require('./server/routes/item'));
 
 
-if(process.env.API_ONLY === 'true'){
+if(process.env.MODE === 'apiOnly'){
     // If Application only needs the API
     util.log('\"API Only\" Mode...');
 }

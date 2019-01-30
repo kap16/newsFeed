@@ -10,7 +10,7 @@ config.client.port=3001;
 config.client.url="http://"+config.host+":"+config.client.port;
 
 config.server = {};
-if(process.env.NODE_ENV==='development'){
+if(process.env.NODE_ENV==='development' && process.env.MODE==='double'){
     config.server.port=3002;
 }else{
     config.server.port=config.client.port;

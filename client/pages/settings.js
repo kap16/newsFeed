@@ -33,9 +33,7 @@ class Settings extends React.Component{
     }
 
     onDefaultPaginationFieldChange(newValue){
-        this.setState({ 
-            DefaultPagination: newValue
-        });
+        this.setState({ DefaultPagination: newValue });
     }
 
     onSave(){
@@ -46,31 +44,24 @@ class Settings extends React.Component{
     }
 
     render(){
+        var style1 = {display:'inline-block'}
         return( 
             <div>
                 <Navbar/>
-                <div style={{padding:'20px'}}>
-                    <div>
-                        <div>
+                <div>
+                    <div style={{padding:'20px'}}>
+                        <div style={style1}>
                         Default Pagination: <input 
                             type="number"
                             className="text-input"
+                            readOnly="readonly"
                             value={this.state.DefaultPagination}/><br/>
-                            <input
-                                type="button"
-                                value={20}
-                                onClick={this.onDefaultPaginationFieldChange(20)}/>
-                            <input
-                                type="button"
-                                value={50}
-                                onClick={this.onDefaultPaginationFieldChange(50)}/>
-                            <input
-                                type="button"
-                                value={100}
-                                onClick={this.onDefaultPaginationFieldChange(100)}/>
+                            <button onClick={() => this.onDefaultPaginationFieldChange(20)}>20</button>
+                            <button onClick={() => this.onDefaultPaginationFieldChange(50)}>50</button>
+                            <button onClick={() => this.onDefaultPaginationFieldChange(100)}>100</button>
                         </div>
-                        <button onClick={this.onSave}>Save</button>
                     </div>
+                    <button onClick={this.onSave}>Save</button>
                 </div>
             </div>         
         );
