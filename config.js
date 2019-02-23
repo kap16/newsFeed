@@ -1,26 +1,20 @@
 
 const config = {};
 
-config.sessionId="sessionID";
-config.secret="someSecret";
-config.host="localhost";
+if (process.env.NODE_ENV === 'production') {
+  // use development config as a basis for this
+} else {
+  config.sessionId = "sessionID";
+  config.secret = "someSecret";
+  config.host = "localhost";
 
-config.client = {};
-config.client.port=3001;
-config.client.url="http://"+config.host+":"+config.client.port;
+  config.server = {};
+  config.server.port = 3001;
+  config.server.routePrefix = "/api";
+  config.server.url = "http://localhost:"+config.server.port+config.server.routePrefix;
 
-config.server = {};
-if(process.env.NODE_ENV==='development' && process.env.MODE==='double'){
-    config.server.port=3002;
-}else{
-    config.server.port=config.client.port;
-}
-config.server.routePrefix="/api";
-config.server.url="http://"+config.host+":"+config.server.port+config.server.routePrefix;
-
-config.mongoURI="mongodb://localhost/news-feed-db";
-config.mongoOpts = {
-    //port:null,
+  config.mongoURI = "mongodb://localhost/news-feed-db";
+  config.mongoOpts = {
     autoIndex: false,
     reconnectTries: Number.MAX_VALUE,
     reconnectInterval: 500,
@@ -28,6 +22,7 @@ config.mongoOpts = {
     bufferMaxEntries: 0,
     connectTimeoutMS: 10000,
     socketTimeoutMS: 45000,
-};
+  };
+}
 
 module.exports = config;
