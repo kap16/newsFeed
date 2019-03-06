@@ -32,9 +32,9 @@ module.exports = {
     }
   },
 
-  getItems(data) {
+  getItems() {
     return function (dispatch) {
-      var url = config.server.url + "/Items"
+      var url = config.server.url + "/items"
       fetch(url, {
         method: "GET",
         headers: {

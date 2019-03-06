@@ -1,9 +1,51 @@
 const util = require('../util');
 const Item = require('../models/item');
 const jwtDecode = require('jwt-decode');
+const Source = require('../models/source');
+const Parser = require('rss-parser');
+
+/** 
+ * updates database with new entries
+ * @param array consisting of the sources associated with the user
+ * @param userId id of the user related to this feed
+ * @param callback callback functon
+ */
+async function asyncForEach(array, userId, callback) {
+  let parser = new Parser();
+  for (let i = 0; i < array.length; i++) {
+    let feed = await parser.parseURL(array[i].link);
+    
+    var items2 = feed.items
+    for (let j = 0; j < items2.length; j++) {
+      let items = await Item.find({ link: items2[j].link }, function (err, item) {
+        if (err) {
+          util.logError(err);
+        } else if (item.length>0) {
+        } else {
+          let newItem = new Item({
+            title: items2[j].title,
+            link: items2[j].link,
+            pubDate: new Date(items2[j].pubDate),
+            guid: items2[j].guid,
+            description: items2[j].description,
+            categories: items2[j].categories,
+            createdOn: new Date().toISOString(),
+            createdBy: userId,
+            source: array[i].id
+          });
+          newItem.save(function (error) {
+            if (error) {
+              console.log(error);
+            }
+          })
+        }
+      })
+    }
+  }
+  callback();
+}
 
 module.exports = {
-
   /** 
    * get rss feed items from database
    * @param req request object
@@ -32,7 +74,7 @@ module.exports = {
     } else {
       Item.find({ createdBy: decoded.id })
         .sort({ pubDate: -1 })
-        //.limit(data.pagination)
+        .limit(20)
         .exec(function (err, items) {
           if (err) {
             util.logError(err);
@@ -52,20 +94,14 @@ module.exports = {
    * @param res response object
    */
   update(req, res) {
-    var data = req.body;
     var decoded = jwtDecode(req.get('Authorization'));
-    Source.find({}, function (err, sources) {
+    Source.find({ createdBy: decoded.id }, function (err, sources) {
       if (err) {
         util.logError(err);
       } else {
-        for (source in sources) {
-          parser.parseURL(data.url, function (err, feed) {
-            console.log(feed.title);
-            feed.items.forEach(function (entry) {
-              console.log(entry.title + ':' + entry.link);
-            })
-          })
-        }
+        asyncForEach(sources, decoded.id, function(){
+          util.logSuccess("done");
+        });
       }
     })
   }

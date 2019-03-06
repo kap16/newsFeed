@@ -47,7 +47,10 @@ module.exports = {
   addSource(req, res) {
     var data = req.body;
     var decoded = jwtDecode(req.get('Authorization'));
-    if (decoded.user.id == undefined) {
+    console.log(decoded);
+    util.logError("cool");
+    if (decoded.id == undefined) {
+      util.logError("cant find user");
       res.send({ message: 'unauthorized: cannot find user' });
     } else {
       util.log("found user");
@@ -64,7 +67,7 @@ module.exports = {
             description: data.desc,
             link: data.link,
             createdOn: currTime,
-            createdBy: decoded.user.id,
+            createdBy: decoded.id,
             updatedOn: currTime
           });
           source.save(function (err) {

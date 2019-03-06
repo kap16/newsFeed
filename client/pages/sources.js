@@ -1,7 +1,6 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-const fetch = require("node-fetch");
 
 import * as actions from '../actions/index';
 import EditSource from '../components/modal/editSource';
@@ -14,18 +13,16 @@ class Sources extends React.Component {
     super(props);
 
     this.state = {
-      sources: []
     };
 
     this.renderSources = this.renderSources.bind(this);
   }
 
   componentDidMount() {
-    this.props.actions.getSources;
+    this.props.actions.getSources();
   }
 
-  renderSources() {
-    var sources = this.state.sources;
+  renderSources(sources) {
     if (sources.length > 0) {
       return (
         <div>
@@ -56,7 +53,7 @@ class Sources extends React.Component {
       <div>
         <Navbar />
         <div>
-          {this.state.sources === undefined ? <p>Loading</p> : this.renderSources()}
+          {this.props.sources === null ? <p>Loading</p> : this.renderSources(this.props.sources)}
         </div>
       </div>
     );
