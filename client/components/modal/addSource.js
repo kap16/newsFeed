@@ -119,10 +119,10 @@ export default class AddSource extends React.Component {
               disabled={isDisabled}
               onClick={(e) => { this.onAdd(e) }}>
               Add
-                        </button>
+              </button>
             <button onClick={this.closeModal}>
               Close
-                        </button>
+              </button>
           </div>
         </div>
       </div>

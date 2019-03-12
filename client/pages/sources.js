@@ -6,6 +6,7 @@ import * as actions from '../actions/index';
 import EditSource from '../components/modal/editSource';
 import Navbar from '../components/navbar';
 import SourceItem from '../components/list/sourceItem';
+import AddSource from '../components/modal/addSource';
 const config = require('../../config');
 
 class Sources extends React.Component {
@@ -29,8 +30,8 @@ class Sources extends React.Component {
           <table id="sources" className="table table-striped">
             <thead>
               <tr>
+                <th>Check</th>
                 <th>Source</th>
-                <th>Added on</th>
               </tr>
             </thead>
             <tbody>
@@ -52,7 +53,15 @@ class Sources extends React.Component {
     return (
       <div>
         <Navbar />
-        <div>
+        {
+          this.props.modal.active && this.props.modal.type === actions.ADD_SOURCE ?
+            <AddSource
+              onClose={this.props.actions.hideModal}
+              show={this.props.modal.active} />
+            : null
+        }
+        <div style={{ paddingTop: "50px"}}>
+          <button onClick={() => this.props.actions.showAddSourceModal()}>Add Source</button>
           {this.props.sources === null ? <p>Loading</p> : this.renderSources(this.props.sources)}
         </div>
       </div>

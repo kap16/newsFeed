@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 
 // Importing files
 import * as actions from '../actions/index';
+import FilterFeed from '../components/modal/filterFeed';
+import FeedItem from '../components/list/feedItem';
 import Navbar from '../components/navbar';
 const config = require('../../config');
 
@@ -16,18 +18,20 @@ class Home extends React.Component {
     }
 
     this.renderItems = this.renderItems.bind(this);
+    this.renderMoreOptions = this.renderMoreOptions.bind(this);
   }
 
   componentDidMount() {
     this.props.actions.getItems();
+    this.props.actions.getSources();
   }
 
   renderItems(items) {
     if (items.length > 0) {
       return (
-        <div>
+        <div className="container">
           {items.map((item, i) => (
-            <p key={i}>{item.title}</p>
+            <FeedItem key={i} item={item} />
           ))}
         </div>
       );
@@ -38,14 +42,27 @@ class Home extends React.Component {
     }
   }
 
+  renderMoreOptions(items) {
+    if (items.length > 1) {
+      return (
+        <button onClick={() => this.props.actions.showFilterFeedModal()}>Filter</button>
+      );
+    }
+  }
+
   render() {
     return (
       <div className="main-body">
         <Navbar />
-        <div className="left-side">
-          <p style={{ padding: "10px" }}>Sidebar</p>
-        </div>
-        <div className="right-side">
+        {
+          this.props.modal.active && this.props.modal.type === actions.FILTER_FEED ?
+            <FilterFeed
+              onClose={this.props.actions.hideModal}
+              show={this.props.modal.active} />
+            : null
+        }
+        <div id="feeds" className="right-side" style={{ padding: "10px" }} >
+          {this.props.sources === null ? null : this.renderMoreOptions(this.props.sources)}
           {this.props.items === null ? <p>Loading</p> : this.renderItems(this.props.items)}
         </div>
       </div>

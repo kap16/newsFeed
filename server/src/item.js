@@ -10,7 +10,7 @@ const Parser = require('rss-parser');
  * @param userId id of the user related to this feed
  * @param callback callback functon
  */
-async function asyncForEach(array, userId, callback) {
+async function asyncForEach(array, callback) {
   let parser = new Parser();
   for (let i = 0; i < array.length; i++) {
     let feed = await parser.parseURL(array[i].link);
@@ -21,16 +21,18 @@ async function asyncForEach(array, userId, callback) {
         if (err) {
           util.logError(err);
         } else if (item.length>0) {
+          console.log("skipped");
+          console.log(items2[j]);
         } else {
           let newItem = new Item({
             title: items2[j].title,
             link: items2[j].link,
             pubDate: new Date(items2[j].pubDate),
             guid: items2[j].guid,
-            description: items2[j].description,
+            snippet: items2[j].contentSnippet,
+            description: items2[j].content,
             categories: items2[j].categories,
             createdOn: new Date().toISOString(),
-            createdBy: userId,
             source: array[i].id
           });
           newItem.save(function (error) {
@@ -99,7 +101,7 @@ module.exports = {
       if (err) {
         util.logError(err);
       } else {
-        asyncForEach(sources, decoded.id, function(){
+        asyncForEach(sources, function(){
           util.logSuccess("done");
         });
       }

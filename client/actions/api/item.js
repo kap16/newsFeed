@@ -15,7 +15,6 @@ module.exports = {
       })
         .then(res => res.json())
         .then(function (res) {
-          console.log("res", res.item);
           if (res.status === 401) {
             dispatch({ type: types.NOT_AUTH });
           } else {

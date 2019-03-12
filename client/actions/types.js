@@ -17,6 +17,8 @@ export const GET_SOURCES = 'GET_SOURCES';
 export const MODAL = 'MODAL';
 export const ADD_SOURCE = 'ADD_SOURCE';
 export const EDIT_SOURCE = 'EDIT_SOURCE';
+export const FILTER_FEED = 'FILTER_FEED'
+export const MODAL_ABOUT = 'MODAL_ABOUT'
 export const CLEAR_MODALS = 'CLEAR_MODALS'
 
 // Misc
