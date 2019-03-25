@@ -115,7 +115,7 @@ const config = {
 if (process.env.NODE_ENV === 'production' || process.env.PROD_ENV) {
   config.plugins.push(
     new OptimizeCssAssetsPlugin(),
-    new CleanWebpackPlugin([OUTPUT_DIR])
+    //new CleanWebpackPlugin([OUTPUT_DIR])
   )
   config.stats = {
     warnings: false

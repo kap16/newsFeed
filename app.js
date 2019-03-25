@@ -1,4 +1,5 @@
 const express = require('express');
+const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -25,41 +26,34 @@ mongoose.connection.on('disconnected', function () {
   util.logWarning('Mongoose default connection disconnected');
 });
 
-// setting up express
-const app = express();
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+if (process.env.NODE_ENV === 'production') {
+  // static files for production
+  app.use(express.static(path.join(__dirname, 'build')));
+  util.log('Production Mode...');
+}
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(cors());
+  util.log('Development Mode...');
+}
 
 require('./server/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-// setting headers
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Content-Type', 'application/json');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.header('Access-Control-Allow-Headers', "Content-Type, authorization");
-  res.header('Access-Control-Allow-Credentials', true);
-  next();
-});
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // API routes
 app.use(config.server.routePrefix, require('./server/routes/user'));
 app.use(config.server.routePrefix, require('./server/routes/source'));
 app.use(config.server.routePrefix, require('./server/routes/item'));
 
-if (process.env.NODE_ENV === 'development') {
-  util.log('Development Mode...');
-} else {
-  app.use(express.static(path.join(__dirname + '/build')));
-  app.get('/*', function (req, res) {
+// the code below is needed to prevent route conflicts
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', function (req, res) {
     res.sendFile(path.resolve(__dirname)+'/build/index.html');
   });
-  util.log('Production Mode...');
-}
+} 
 
 // confirm that express application is running and using the right port
 app.set('port', (process.env.port || config.server.port));

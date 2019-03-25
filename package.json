@@ -44,6 +44,7 @@
     "file-loader": "*",
     "html-loader": "^0.5.1",
     "html-webpack-plugin": "^2.30.1",
+    "jest": "^24.5.0",
     "node-sass": "^4.11.0",
     "nodemon": "*",
     "optimize-css-assets-webpack-plugin": "^3.2.0",
@@ -55,6 +56,8 @@
   },
   "scripts": {
     "dev": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js\" \"cross-env NODE_ENV=development nodemon app.js\"",
+    "test": "jest --watchAll",
+    "stage": "cross-env NODE_ENV=production webpack --config webpack.config.js && cross-env NODE_ENV=production nodemon app.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js ",
     "start": "cross-env NODE_ENV=production node app.js"
   },
@@ -64,7 +67,7 @@
       "app.js"
     ]
   },
-  "proxy": "http://localhost:3000",
+  "proxy": "http://localhost:3001",
   "repository": {
     "type": "git",
     "url": ""
