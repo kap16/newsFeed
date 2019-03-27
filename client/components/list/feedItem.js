@@ -3,6 +3,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { convertDateTime } from '../../utils.js';
+import { browserHistory } from 'react-router';
 import PropTypes from 'prop-types';
 
 import * as actions from '../../actions/index';
@@ -13,6 +14,12 @@ class FeedItem extends React.Component {
     super(props);
     this.state = {};
 
+    this.onArticlePageRedirect = this.onArticlePageRedirect.bind(this);
+  }
+
+  onArticlePageRedirect(e){
+    e.preventDefault();
+    browserHistory.push('/atricle/'+this.props.item._id);
   }
 
   render() {
@@ -26,6 +33,9 @@ class FeedItem extends React.Component {
         <div>
           <h5>{item.title}</h5>
           <p>This was published on {convertDateTime(item.pubDate)}</p>
+        </div>
+        <div>
+          <button onClick={this.onArticlePageRedirect} className="block">View more</button>
         </div>
       </div>
     );

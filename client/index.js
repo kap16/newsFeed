@@ -17,6 +17,7 @@ import Register from 'pages/register';
 import ErrorPage from 'pages/error';
 import Sources from 'pages/sources';
 import Settings from 'pages/settings';
+import NewsItem from 'pages/newsItem';
 const config = require('../config');
 
 // create redux store
@@ -57,6 +58,7 @@ class App extends React.Component {
           <Route path="/register" component={Register} onEnter={redirectToHome} />
           <Route path="/sources" component={Sources} onEnter={requireAuth} />
           <Route path="/settings" component={Settings} onEnter={requireAuth} />
+          <Route path="/atricle/:id" component={NewsItem} onEnter={requireAuth}/>
           <Route path='*' component={ErrorPage} />
         </Router>
       </Provider>

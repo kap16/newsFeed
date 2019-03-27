@@ -30,6 +30,7 @@ async function asyncForEach(array, userId, callback) {
             guid: items2[j].guid,
             snippet: items2[j].contentSnippet,
             description: items2[j].content,
+            //description: items2[j].content.replace(/(<([^>]+)>)/ig,""), // for stripping html from string
             categories: items2[j].categories,
             createdOn: new Date().toISOString(),
             createdBy: userId,
@@ -55,11 +56,14 @@ module.exports = {
    */
   getItem(req, res) {
     var decoded = jwtDecode(req.get('Authorization'));
-    Item.findOne({ id: data._id, createdBy: decoded._id }, function (err, items) {
+    Item.findById(req.params.id, function (err, item) {
       if (err) {
         util.logError(err);
       } else {
-        res.send(items);
+        var resObj = JSON.stringify({
+          item: item
+        });
+        res.send(resObj );
       }
     });
   },
