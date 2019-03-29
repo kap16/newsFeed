@@ -16,32 +16,29 @@ class Navbar extends React.Component {
   }
 
   render() {
+    var styleHead ={
+      textDecoration: "none",
+      float: "left"
+    }
+
     return (
-      <div>
-        <header id="navbar">
-          <div className="container">
-            <div className="header-left">
-              <h1><a href="/">newsFeed</a></h1>
-            </div>
-            <div className="header-right">
-              <nav>
-                <ul className="topnav">
-                  <li><a href="/sources">Sources</a></li>
-                  <li><a href="/settings">Settings</a></li>
-                  <li><a href="#" onClick={this.props.actions.logout}>Logout</a></li>
-                  <li><a href="#" onClick={this.props.actions.showAboutModal}>About</a></li>
-                  {
-                    this.props.modal.active && this.props.modal.type === actions.MODAL_ABOUT ?
-                      <AboutModal
-                        onClose={this.props.actions.hideModal}
-                        show={this.props.modal.active} />
-                      : null
-                  }
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </header>
+      <div id="navbar">
+        <h1 style={styleHead}><a href="/">newsFeed</a></h1>
+        <label htmlFor="toggle"><img src="../img/menu-24.png" alt="Menu" /></label>
+        <input type="checkbox" id="toggle" />
+        <ul className="topnav">
+          <li><a href="/sources">Sources</a></li>
+          <li><a href="/settings">Settings</a></li>
+          <li><a href="#" onClick={this.props.actions.logout}>Logout</a></li>
+          <li><a href="#" onClick={this.props.actions.showAboutModal}>About</a></li>
+          {
+            this.props.modal.active && this.props.modal.type === actions.MODAL_ABOUT ?
+              <AboutModal
+                onClose={this.props.actions.hideModal}
+                show={this.props.modal.active} />
+              : null
+          }
+        </ul>
       </div>
     );
   }

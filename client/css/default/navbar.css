@@ -3,24 +3,9 @@
   top: 0; /* Position the navbar at the top of the page */
   width: 100%; /* Full width */
   z-index: 1;
-  background-color: gray;
+  padding: 0px 300px;
+  background-color: white;
   border-bottom: 2px solid #0575e6;
-}
-
-#navbar .container{
-  margin: 0px auto;
-  position: relative;
-  padding: 0px;
-}
-
-.header-right{
-  position: relative;
-  float: right;
-}
-
-.header-left{
-  position: relative;
-  float: left;
 }
 
 ul.topnav {
@@ -30,7 +15,9 @@ ul.topnav {
   overflow: hidden;
 }
   
-ul.topnav li {float: left;}
+ul.topnav li {
+  float: right;
+}
   
 ul.topnav li a {
   display: block;
@@ -39,13 +26,56 @@ ul.topnav li a {
   padding: 14px 16px;
   text-decoration: none;
 }
-  
-ul.topnav li a:hover:not(.active) {background-color: white;}
-  
-/*ul.topnav li a.active {background-color: #4CAF50;}*/
-  
-@media screen and (max-width: 600px) {
-  .header-left, .header-right{ float: none; overflow: hidden}
 
-  ul.topnav li {float: none; }
+label {
+  margin: 0 40px 0 0;
+  display: none;
+  float: right;
+}
+  
+ul.topnav li a:hover:not(.active) {
+  background-color: #0575e6;
+}
+  
+#toggle{
+  display: none;
+}
+  
+@media only screen and (max-width: 800px) {
+  #navbar{
+    padding: 0px 0px;
+  }
+
+  #navbar h1 a{
+    padding-left: 15px;
+  }
+
+  label {
+    padding: 10px;
+    display: block;
+    cursor: pointer;
+  }
+  .topnav {
+    text-align: center;
+    width: 100%;
+    display: none;
+  }
+  .topnav li a{
+    display: block;
+    border-bottom: 1px solid #EAEAEB;
+    margin: 0;
+  
+  }
+  #toggle:checked + .topnav{
+    display: block;
+  }
+
+  ul.topnav li {
+    float: none; 
+  }
+
+  /*ul.topnav li a {
+    display: block;
+    border-bottom: 1px solid #EAEAEB;
+  }*/
 }
