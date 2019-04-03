@@ -10,10 +10,11 @@
 #feeds .container{
   margin: 10px auto;
   position: relative;
-  padding: 5px;
-  padding-right: 30px;
+  padding: 5px 30px;
+  max-width: 2000px;
 }
 
+/* cards */
 .card{
   overflow:hidden;
   display: inline-block;

@@ -30,29 +30,12 @@ export default class AddSource extends React.Component {
       e.preventDefault();
       console.log("Field errors");
     } else {
-      var url = config.server.url + "/source"
       var data = {
         "title": this.state.title,
         "link": this.state.link,
         "desc": this.state.desc
       }
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Authorization": sessionStorage.getItem(config.sessionId),
-          "Content-Length": Buffer.byteLength(data),
-          "Content-Type": "application/json"
-        }
-      })
-        .then(out => out.json())
-        .then(function (res) {
-          console.log("Source was added")
-        })
-        .then(this.closeModal)
-        .catch(function (e) {
-          console.log(e);
-        });
+      this.props.onSave(data);
     }
   }
 

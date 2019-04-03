@@ -40,6 +40,12 @@ ul.topnav li a:hover:not(.active) {
 #toggle{
   display: none;
 }
+
+@media only screen and (max-width: 1200px) {
+  #navbar{
+    padding: 0px 100px;
+  }
+}
   
 @media only screen and (max-width: 800px) {
   #navbar{

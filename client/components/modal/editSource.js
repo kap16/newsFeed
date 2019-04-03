@@ -1,15 +1,21 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actions from '../../actions/index';
 import PropTypes from 'prop-types';
+
 import style from '../../css/default/modal.css';
 const config = require('../../../config');
 
-export default class EditSource extends React.Component {
+class EditSource extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: this.props.sItem.title,
-      link: this.props.sItem.link,
-      desc: this.props.sItem.desc,
+      id: this.props.modal.data._id,
+      title: this.props.modal.data.title,
+      link: this.props.modal.data.link,
+      desc: this.props.modal.data.desc,
+
       errors: {
         title: false,
         link: false,
@@ -30,30 +36,14 @@ export default class EditSource extends React.Component {
     if (!this.canSubmit()) {
       e.preventDefault();
       console.log("Field errors")
-    } else {
-      var url = config.server.url + "/source/" + this.props.sItem._id
+    } else {  
       var data = {
-        "title": this.state.title,
-        "link": this.state.link,
-        "desc": this.state.desc
+        title: this.state.title,
+        link: this.state.link,
+        desc: this.state.desc,
+        id: this.state.id
       }
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Authorization": sessionStorage.getItem(config.sessionId),
-          "Content-Length": Buffer.byteLength(data),
-          "Content-Type": "application/json"
-        }
-      })
-        .then(res => res.json())
-        .then(function (res) {
-          console.log("Source was saved");
-        })
-        .then(this.closeModal)
-        .catch(function (e) {
-          console.log(e);
-        });
+      this.props.onSave(data);
     }
   }
 
@@ -120,13 +110,25 @@ export default class EditSource extends React.Component {
               disabled={isDisabled}
               onClick={(e) => { this.onEdit(e) }}>
               Save
-                        </button>
+            </button>
             <button onClick={this.closeModal}>
               Close
-                        </button>
+            </button>
           </div>
         </div>
       </div>
     )
   }
 }
+
+function mapStateToProps(state) {
+  return { ...state };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditSource);

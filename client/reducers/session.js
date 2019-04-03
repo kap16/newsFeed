@@ -19,6 +19,13 @@ const sessionReducer = function (session = initialState.session, action) {
         session: null
       }
       return !!sessionStorage.getItem(config.sessionId.toString());
+    //Page refreshes
+    case types.REFRESH_PAGE_SOURCE:
+      browserHistory.push('/sources');
+      return session;
+    case types.REFRESH_PAGE_SETTINGS:
+      browserHistory.push('/settings');
+      return session;
     default:
       return session;
   }

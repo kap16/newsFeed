@@ -33,8 +33,7 @@ module.exports = {
         util.logError(err);
       }
       var resBody = { sources: sources };
-      console.log(resBody);
-      util.logSuccess("Success");
+      util.logSuccess("Success: got sources");
       res.send(resBody);
     });
   },
@@ -48,7 +47,6 @@ module.exports = {
     var data = req.body;
     var decoded = jwtDecode(req.get('Authorization'));
     console.log(decoded);
-    util.logError("cool");
     if (decoded.id == undefined) {
       util.logError("cant find user");
       res.send({ message: 'unauthorized: cannot find user' });
@@ -124,13 +122,18 @@ module.exports = {
    * @param res response object
    */
   deleteSource(req, res) {
-    Source.find({ _id: req.params.id }, function (err, sources) {
-      if (err) {
-        util.logError(err);
-      } else {
-        util.logSuccess("Deleted a list")
-        res.send(list);
-      }
-    })
+    var decoded = jwtDecode(req.get('Authorization'));
+    var data = req.body
+    if (decoded.id == undefined) {
+      res.send({ message: 'unauthorized: cannot find user' });
+    } else {
+      Source.findByIdAndRemove({
+        _id: data.id
+      }).then(function (source) {
+        res.send(source);
+      }).catch(function(e){
+        console.log(e)
+      });
+    }
   }
 }

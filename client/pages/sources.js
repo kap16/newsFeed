@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/index';
 import EditSource from '../components/modal/editSource';
 import Navbar from '../components/navbar';
+import sourcesStyle from '../css/default/source.css'
 import SourceItem from '../components/list/sourceItem';
 import AddSource from '../components/modal/addSource';
 const config = require('../../config');
@@ -27,11 +28,20 @@ class Sources extends React.Component {
     if (sources.length > 0) {
       return (
         <div>
-          <table id="sources" className="table table-striped">
+          {
+            this.props.modal.active && this.props.modal.type === actions.EDIT_SOURCE ?
+              <EditSource
+                onClose={this.props.actions.hideModal}
+                onSave={this.props.actions.updateSource}
+                show={this.props.modal.active} />
+              : null
+          }
+          <table id="sources-table" className="table table-striped">
             <thead>
               <tr>
-                <th>Check</th>
                 <th>Source</th>
+                <th>Added</th>
+                <th>Options</th>
               </tr>
             </thead>
             <tbody>
@@ -50,19 +60,22 @@ class Sources extends React.Component {
   }
 
   render() {
+    var sources = this.props.sources; 
     return (
-      <div>
+      <div className="main-body">
         <Navbar />
         {
           this.props.modal.active && this.props.modal.type === actions.ADD_SOURCE ?
             <AddSource
               onClose={this.props.actions.hideModal}
-              show={this.props.modal.active} />
+              onSave={this.props.actions.addSource}
+              show={this.props.modal.active}
+              />
             : null
         }
-        <div style={{ paddingTop: "50px"}}>
+        <div>
           <button onClick={() => this.props.actions.showAddSourceModal()}>Add Source</button>
-          {this.props.sources === null ? <p>Loading</p> : this.renderSources(this.props.sources)}
+          {sources === null ? <p>Loading</p> : this.renderSources(sources)}
         </div>
       </div>
     );

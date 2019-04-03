@@ -42,7 +42,7 @@ class NewsItem extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="main-body">
         <Navbar/>
         <div id="article">
           {this.state.itemId === undefined ? <p>Loading</p> : this.renderContent()}

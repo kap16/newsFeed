@@ -1,11 +1,10 @@
 // This file is needed for reducers
 
-// user configurations
+// session
 export const AUTH = 'AUTH'; 
 export const UNAUTH = 'UNAUTH';
-export const SETTINGS = 'SETTINGS';
 
-// news feed items
+// articles
 export const GET_ITEM = 'GET_ITEM';
 export const GET_ITEMS = 'GET_ITEMS';
 
@@ -23,4 +22,5 @@ export const CLEAR_MODALS = 'CLEAR_MODALS'
 
 // Misc
 export const NONE = 'NONE';
+export const SETTINGS = 'SETTINGS';
 export const TEST = 'TEST';

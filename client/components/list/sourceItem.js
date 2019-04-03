@@ -13,32 +13,38 @@ const config = require('../../../config');
 class SourceItem extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      source: this.props.source
+    }; 
+
+    this.showModal = this.showModal.bind(this);
+    this.deleteSource = this.deleteSource.bind(this);
+  }
+
+  showModal(){
+    this.props.actions.showEditSourceModal(this.state.source);
+  }
+
+  deleteSource(){
+    this.props.actions.deleteSource({id: this.state.source._id});
   }
 
   render() {
-    var source = this.props.source;
     if(this.props.displayOn === "home"){
       return (
         <tr>
           <td><input type="checkbox"/></td>
-          <td>{source.title}</td>
-          
+          <td>{source.title}</td>        
         </tr>
       )
     }else{
       return (
         <tr>
-          <td onClick={this.props.actions.showEditSourceModal}>{source.title}</td>
-          <td>{convertDateTime(source.createdOn)}
-            {
-              this.props.modal.active && this.props.modal.type === actions.EDIT_SOURCE ?
-                <EditSource
-                  sItem={source}
-                  onClose={this.props.actions.hideModal}
-                  show={this.props.modal.active} />
-                : null
-            }
+          <td>{this.state.source.title}</td>
+          <td>{convertDateTime(this.state.source.createdOn)}</td>
+          <td>
+            <button onClick={this.showModal}>Edit</button>
+            <button onClick={this.deleteSource}>Delete</button>
           </td>
         </tr>
       )

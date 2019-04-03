@@ -45,9 +45,9 @@ class Settings extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="main-body">
         <Navbar />
-        <div style={{ paddingTop: "50px" }}>
+        <div>
           <div style={{ padding: '20px' }}>
             <div style={{ display: 'inline-block' }}>
               Default Pagination: <input

@@ -24,10 +24,11 @@ export function showAddSourceModal() {
   }
 }
 
-export function showEditSourceModal() {
+export function showEditSourceModal(data) {
   return function (dispatch) {
     dispatch({
       type: types.EDIT_SOURCE,
+      payload: data
     });
   }
 }

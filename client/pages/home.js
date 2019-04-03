@@ -61,7 +61,7 @@ class Home extends React.Component {
               show={this.props.modal.active} />
             : null
         }
-        <div id="feeds" className="right-side" style={{ padding: "10px" }} >
+        <div id="feeds" style={{ padding: "10px" }} >
           {this.props.sources === null ? null : this.renderMoreOptions(this.props.sources)}
           {this.props.items === null ? <p>Loading</p> : this.renderItems(this.props.items)}
         </div>
@@ -73,7 +73,6 @@ class Home extends React.Component {
 function mapStateToProps(state) {
   return { ...state };
 }
-
 
 function mapDispatchToProps(dispatch) {
   return {

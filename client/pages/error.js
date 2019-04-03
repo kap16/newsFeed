@@ -1,33 +1,33 @@
 // Importing Libraries
 import React from 'react';
-import {bindActionCreators} from 'redux';  
-import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 // Importing files
 import * as actions from '../actions/index';
 const config = require('../../config');
 
-class ErrorPage extends React.Component{
-    render(){
-        return( 
-            <div>
-                <div className="bg">
-                    <p>Error</p>
-                </div>
-            </div>         
-        );
-    }
+class ErrorPage extends React.Component {
+  render() {
+    return (
+      <div className="main-body">
+        <div className="bg">
+          <p>Error</p>
+        </div>
+      </div>
+    );
+  }
 }
 
-function mapStateToProps(state) {  
-    return { ...state };
+function mapStateToProps(state) {
+  return { ...state };
 }
 
 
-function mapDispatchToProps(dispatch) {  
-    return {
-        actions: bindActionCreators(actions, dispatch)
-    };
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  };
 }
 
 export default connect(null, mapDispatchToProps)(ErrorPage);

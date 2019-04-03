@@ -22,6 +22,9 @@ if (process.env.NODE_ENV === 'production') {
     bufferMaxEntries: 0,
     connectTimeoutMS: 10000,
     socketTimeoutMS: 45000,
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useCreateIndex: true
   };
 }
 

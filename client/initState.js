@@ -5,7 +5,8 @@ const initState = {
   test: null,
   modal: {
     type: "",
-    active: false
+    active: false,
+    data: null
   },
   items: [],
   settings: null,
