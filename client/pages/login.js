@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 // Importing files
-import loginStyle from 'css/default/login.css';
-import styles from 'css/default/index.css';
+import loginStyle from 'styles/default/login.css';
+import styles from 'styles/default/index.css';
 import * as actions from '../actions/index';
 
 class Login extends React.Component {

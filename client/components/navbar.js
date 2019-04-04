@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 // Importing files
 import * as actions from '../actions/index';
 import AboutModal from '../components/modal/about.js'
-import navbarStyle from '../css/default/navbar.css'
+import navbarStyle from '../styles/default/navbar.css'
 const config = require('../../config');
 
 class Navbar extends React.Component {

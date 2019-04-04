@@ -1,13 +1,13 @@
 import * as types from '../actions/types';
-const initialState = require('../initState');
+import initialState from '../initState'
 
-const settingsReducer = function(settings = initialState.settings, action) {  
-    switch(action.type) {
-        case types.SETTINGS:
-            return action.payload;
-        default: 
-            return settings;
-    }
+const settingsReducer = function (settings = initialState.settings, action) {
+  switch (action.type) {
+    case types.SETTINGS:
+      return action.payload;
+    default:
+      return settings;
+  }
 };
 
-module.exports = settingsReducer;
+export default settingsReducer

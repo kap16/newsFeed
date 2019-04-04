@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import * as actions from '../actions/index';
 import Navbar from '../components/navbar';
-import articleStyle from '../css/default/article.css';
+import articleStyle from '../styles/default/article.css';
 import { convertDateTime } from '../utils.js';
 const config = require('../../config');
 

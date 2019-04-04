@@ -1,5 +1,5 @@
 import * as types from '../actions/types';
-const initialState = require('../initState');
+import initialState from '../initState'
 
 const itemsReducer = function (items = initialState.items, action) {
   switch (action.type) {
@@ -12,4 +12,4 @@ const itemsReducer = function (items = initialState.items, action) {
   }
 };
 
-module.exports = itemsReducer;
+export default itemsReducer

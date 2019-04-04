@@ -7,9 +7,8 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 // Importing files
-import style from 'css/default/index.css';
-import feedstyle from 'css/default/feeds.css';
-
+import style from 'styles/default/index.css';
+import feedstyle from 'styles/default/feeds.css';
 import rootReducer from './reducers/root';
 import Home from 'pages/home';
 import Login from 'pages/login';

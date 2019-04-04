@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import * as actions from '../../actions/index';
 import EditSource from '../../components/modal/editSource';
 import { convertDateTime } from '../../utils.js'
-import style from '../../css/default/modal.css';
+import style from '../../styles/default/modal.css';
 const config = require('../../../config');
 
 class SourceItem extends React.Component {

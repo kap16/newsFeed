@@ -1,5 +1,5 @@
 import * as types from '../actions/types';
-const initialState = require('../initState');
+import initialState from '../initState'
 
 const modalReducer = function (modal = initialState.modal, action) {
   switch (action.type) {
@@ -20,8 +20,4 @@ const modalReducer = function (modal = initialState.modal, action) {
   }
 };
 
-module.exports = modalReducer;
-
-/*
-Add Data to the reducer shown here
-*/
+export default modalReducer

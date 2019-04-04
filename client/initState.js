@@ -14,4 +14,4 @@ const initState = {
   session: !!sessionStorage.getItem(config.sessionId.toString())
 };
 
-module.exports = initState;
+export default initState;

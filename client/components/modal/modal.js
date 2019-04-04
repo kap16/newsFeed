@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import style from '../../css/default/modal.css'
+import style from '../../styles/default/modal.css'
 
 export default class Modal extends React.Component {
   onClose(e) {
