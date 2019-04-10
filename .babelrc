@@ -1,13 +1,19 @@
 {
-    "presets" : [
-      "@babel/react",
-      "@babel/env"
-    ],
-    "plugins": [
-      "transform-object-rest-spread",
-      ["transform-class-properties", { "spec": true }]
-    ],
-    "test": [
-      "jest"
-  ]
+  "presets" : [
+    "@babel/react",
+    "@babel/env"
+  ],
+  "plugins": [
+    "transform-object-rest-spread",
+    ["transform-class-properties", { "spec": true }]
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        "@babel/plugin-transform-modules-commonjs",
+        "transform-object-rest-spread",
+        ["transform-class-properties", { "spec": true }]
+      ]
+    }
+  }
 }

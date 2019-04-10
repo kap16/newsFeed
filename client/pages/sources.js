@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/index';
 import EditSource from '../components/modal/editSource';
 import Navbar from '../components/navbar';
-import sourcesStyle from '../styles/default/source.css'
 import SourceItem from '../components/list/sourceItem';
 import AddSource from '../components/modal/addSource';
 const config = require('../../config');

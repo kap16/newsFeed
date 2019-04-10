@@ -3,8 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/index';
 import PropTypes from 'prop-types';
-
-import style from '../../styles/default/modal.css';
 const config = require('../../../config');
 
 class EditSource extends React.Component {

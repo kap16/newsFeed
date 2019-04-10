@@ -1,0 +1,88 @@
+@import "variables";
+
+#navbar{
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
+  z-index: 1;
+  padding: 0px 300px;
+  background-color: $colour-bg-1;
+  border-bottom: 2px solid $colour-bg-3;
+
+  ul.topnav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+
+    li {
+      float: right;
+
+      a {
+        display: block;
+        color: $colour-text-1;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+      a:hover:not(.active) {
+        background-color: $colour-bg-3;
+      }
+    }    
+  }
+
+  label {
+    margin: 0 40px 0 0;
+    display: none;
+    float: right;
+  }
+
+  #toggle {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: $breakpoint-1) {
+  #navbar{
+    padding: 0px 100px;
+  }
+}
+  
+@media only screen and (max-width: $breakpoint-2) {
+  #toggle{
+    &:checked {
+      &+.topnav{
+        display: block;
+      }
+    }
+  }
+
+  #navbar{
+    padding: 0px 0px;
+    h1 {
+      a {
+        padding-left: 15px;
+      }
+    }
+  }
+
+  label {
+    padding: 10px;
+    display: block;
+    cursor: pointer;
+  }
+
+  .topnav {
+    text-align: center;
+    width: 100%;
+    display: none;
+    li {
+      float: none; 
+      a {
+        display: block;
+        border-bottom: 1px solid #EAEAEB;
+        margin: 0;
+      }
+    }
+  }
+}

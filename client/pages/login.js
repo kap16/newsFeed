@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 // Importing files
-import loginStyle from 'styles/default/login.css';
-import styles from 'styles/default/index.css';
 import * as actions from '../actions/index';
 
 class Login extends React.Component {
@@ -87,30 +85,32 @@ class Login extends React.Component {
     //var style = {backgroundColor: '#292931'};
     var style2 = { color: '#FA9696' };
     return (
-      <div id="login" className="login-bg">
-        <form onSubmit={this.onSave} onChange={this.onChange}>
-          <h2>Sign In</h2>
-          <input
-            id="username"
-            type="text"
-            className="text-input"
-            placeholder="Username"
-            value={this.state.formFields.username}
-            onChange={(e) => this.onUsernameFieldChange(e)}
-          />
-          <p style={style2}>{this.state.formErrors.username}</p>
-          <input
-            id="password"
-            type="password"
-            className="text-input"
-            placeholder="Password"
-            value={this.state.formFields.password}
-            onChange={(e) => this.onPasswordFieldChange(e)}
-          />
-          <p style={style2}>{this.state.formErrors.password}</p>
-          <button type="submit" className="login-btn">Sign In</button>
-        </form>
-        <p id="login-switch">Don't have an account? Click <Link to={"/register"}>here</Link> to sign up</p>
+      <div className="main-body">
+        <div id="login">
+          <form onSubmit={this.onSave} onChange={this.onChange}>
+            <h2>Sign In</h2>
+            <input
+              id="username"
+              type="text"
+              className="text-input"
+              placeholder="Username"
+              value={this.state.formFields.username}
+              onChange={(e) => this.onUsernameFieldChange(e)}
+            />
+            <p style={style2}>{this.state.formErrors.username}</p>
+            <input
+              id="password"
+              type="password"
+              className="text-input"
+              placeholder="Password"
+              value={this.state.formFields.password}
+              onChange={(e) => this.onPasswordFieldChange(e)}
+            />
+            <p style={style2}>{this.state.formErrors.password}</p>
+            <button type="submit" className="login-btn">Sign In</button>
+          </form>
+          <p id="login-switch">Don't have an account? Click <Link to={"/register"}>here</Link> to sign up</p>
+        </div>
       </div>
     );
   }

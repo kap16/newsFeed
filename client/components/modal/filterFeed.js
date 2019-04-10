@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import * as actions from '../../actions/index.js';
-import style from '../../styles/default/modal.css';
 import SourceItem from '../../components/list/sourceItem';
 const config = require('../../../config');
 

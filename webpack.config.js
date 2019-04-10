@@ -77,10 +77,7 @@ const config = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'sass-loader']
-        })
+        use: ['style-loader','css-loader','sass-loader']
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,

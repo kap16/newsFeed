@@ -1,0 +1,23 @@
+@import "variables";
+@import "modal";
+@import "navbar";
+@import "feeds";
+@import "source";
+@import "article";
+@import "login";
+
+.main-body {
+  height: 100%;
+  padding-top: 50px;
+}
+
+.error {
+  border-color: $colour-error;
+  p {
+    color: $colour-error;
+  }
+}
+
+button {
+  padding: 5px 10px
+}

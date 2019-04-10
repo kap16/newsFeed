@@ -1,0 +1,59 @@
+@import "variables";
+
+/*login & signup stuff*/
+#login{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  background-color: $colour-bg-2;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  color: $colour-text-2;
+  font-size: 35px;
+  padding-bottom: 10px;
+}
+
+.text-input {
+  color: $colour-text-1;
+}
+
+input {
+  display: block;
+  width: 320px;
+  height: 40px;
+  padding: 10px;
+  font-size: 14px;
+  background-color: transparentize($colour-text-2, 0);
+  outline: none;
+  border: 1px solid transparentize($colour-text-2, 0);
+  box-shadow: inset 0px -5px 45px rgba(100,100,100,0.2), 0px 1px 1px rgba(255,255,255,0.2);
+  margin-bottom: 10px;
+}
+
+.login-btn {
+  background: $colour-bg-3;
+  font-size: 18px;
+  text-align: center;
+  width: 100%;
+  border: none;
+  vertical-align: middle;
+}
+
+.login-btn:active {
+  background:#36729c;
+}
+
+.btn-text {
+  color: $colour-text-2;
+}
+
+#login-switch {
+  text-align: center;
+  color: $colour-text-2;
+  font-size: 15px;
+  padding: 10px;
+}

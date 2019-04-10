@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import style from '../../styles/default/modal.css'
 
 export default class AboutModal extends React.Component {
   onClose(e) {
