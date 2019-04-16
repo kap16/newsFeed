@@ -1,7 +1,6 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import * as actions from '../../actions/index.js';
 import SourceItem from '../../components/list/sourceItem';

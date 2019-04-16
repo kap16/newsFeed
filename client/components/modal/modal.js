@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 export default class Modal extends React.Component {
   onClose(e) {
@@ -17,7 +16,7 @@ export default class Modal extends React.Component {
             <h2>Modal Header</h2>
           </div>
           <div className="modal-body">
-            <p>{this.props.children}</p>
+            <p>{this.props.modalText}</p>
           </div>
           <div className="modal-footer">
             <button onClick={(e) => { this.onClose(e) }}>

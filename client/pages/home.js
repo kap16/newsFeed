@@ -10,7 +10,7 @@ import FeedItem from '../components/list/feedItem';
 import Navbar from '../components/navbar';
 const config = require('../../config');
 
-class Home extends React.Component {
+export class Home extends React.Component {
 
   constructor(props) {
     super(props);

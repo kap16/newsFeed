@@ -9,7 +9,7 @@ import SourceItem from '../components/list/sourceItem';
 import AddSource from '../components/modal/addSource';
 const config = require('../../config');
 
-class Sources extends React.Component {
+export class Sources extends React.Component {
   constructor(props) {
     super(props);
 

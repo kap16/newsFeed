@@ -5,17 +5,18 @@ import { Router, Route, browserHistory } from 'react-router';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import PropTypes from 'prop-types';
 
 // Importing files
 import style from 'styles/default/index.scss';
 import rootReducer from './reducers/root';
-import Home from 'pages/home';
-import Login from 'pages/login';
-import Register from 'pages/register';
-import ErrorPage from 'pages/error';
-import Sources from 'pages/sources';
-import Settings from 'pages/settings';
-import NewsItem from 'pages/newsItem';
+import ConnectedHome from 'pages/home';
+import ConnectedLogin from 'pages/login';
+import ConnectedRegister from 'pages/register';
+import ConnectedErrorPage from 'pages/error';
+import ConnectedSources from 'pages/sources';
+import ConnectedSettings from 'pages/settings';
+import ConnectedArticlePage from 'pages/articlePage';
 const config = require('../config');
 
 // create redux store
@@ -51,13 +52,13 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <Router history={browserHistory}>
-          <Route path="/" component={Home} onEnter={requireAuth} />
-          <Route path="/login" component={Login} onEnter={redirectToHome} />
-          <Route path="/register" component={Register} onEnter={redirectToHome} />
-          <Route path="/sources" component={Sources} onEnter={requireAuth} />
-          <Route path="/settings" component={Settings} onEnter={requireAuth} />
-          <Route path="/atricle/:id" component={NewsItem} onEnter={requireAuth}/>
-          <Route path='*' component={ErrorPage} />
+          <Route path="/" component={ConnectedHome} onEnter={requireAuth} />
+          <Route path="/login" component={ConnectedLogin} onEnter={redirectToHome} />
+          <Route path="/register" component={ConnectedRegister} onEnter={redirectToHome} />
+          <Route path="/sources" component={ConnectedSources} onEnter={requireAuth} />
+          <Route path="/settings" component={ConnectedSettings} onEnter={requireAuth} />
+          <Route path="/atricle/:id" component={ConnectedArticlePage} onEnter={requireAuth} />
+          <Route path='*' component={ConnectedErrorPage} />
         </Router>
       </Provider>
     );

@@ -7,7 +7,7 @@ import * as actions from '../actions/index';
 import Navbar from '../components/navbar';
 var config = require('../../config');
 
-class Settings extends React.Component {
+export class Settings extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,11 +50,7 @@ class Settings extends React.Component {
         <div>
           <div style={{ padding: '20px' }}>
             <div style={{ display: 'inline-block' }}>
-              Default Pagination: <input
-                type="number"
-                className="text-input"
-                readOnly="readonly"
-                value={this.state.DefaultPagination} /><br />
+              <p>Default Pagination</p>
               <button onClick={() => this.onDefaultPaginationFieldChange(20)}>20</button>
               <button onClick={() => this.onDefaultPaginationFieldChange(50)}>50</button>
               <button onClick={() => this.onDefaultPaginationFieldChange(100)}>100</button>

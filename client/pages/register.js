@@ -1,6 +1,5 @@
 // Importing Libraries
 import React from 'react';
-import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -8,7 +7,7 @@ import { Link } from 'react-router';
 // Importing files
 import * as actions from '../actions/index';
 
-class Register extends React.Component {
+export class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -136,48 +135,50 @@ class Register extends React.Component {
     var style = { backgroundColor: '#292931' };
     var style2 = { color: 'white' };
     return (
-      <div id="login" className="login-bg">
-        <form onSubmit={this.onSave}>
-          <h2>Sign Up</h2>
-          <input
-            id="username"
-            type="text"
-            className="text-input"
-            placeholder="Username"
-            value={this.state.formFields.username}
-            onChange={(e) => this.onUsernameFieldChange(e)}
-          />
-          <p style={style2}>{this.state.formErrors.username}</p>
-          <input
-            id="email"
-            type="text"
-            className="text-input"
-            placeholder="Email"
-            value={this.state.formFields.email}
-            onChange={(e) => this.onEmailFieldChange(e)}
-          />
-          <p style={style2}>{this.state.formErrors.email}</p>
-          <input
-            id="password"
-            type="password"
-            className="text-input"
-            placeholder="Password"
-            value={this.state.formFields.password}
-            onChange={(e) => this.onPasswordFieldChange(e)}
-          />
-          <p style={style2}>{this.state.formErrors.password}</p>
-          <input
-            id="password-confirm"
-            type="password"
-            className="text-input"
-            placeholder="Confirm Password"
-            value={this.state.formFields.password2}
-            onChange={(e) => this.onPassword2FieldChange(e)}
-          />
-          <p style={style2}>{this.state.formErrors.password2}</p>
-          <input type="submit" className="login-btn" value="Sign Up" />
-        </form>
-        <p id="login-switch">Already have an account? Click <Link to={"/login"}>here</Link> to login</p>
+      <div className="main-body">
+        <div id="login" className="login-bg">
+          <form onSubmit={this.onSave}>
+            <h2>Sign Up</h2>
+            <input
+              id="username"
+              type="text"
+              className="text-input"
+              placeholder="Username"
+              value={this.state.formFields.username}
+              onChange={(e) => this.onUsernameFieldChange(e)}
+            />
+            <p style={style2}>{this.state.formErrors.username}</p>
+            <input
+              id="email"
+              type="text"
+              className="text-input"
+              placeholder="Email"
+              value={this.state.formFields.email}
+              onChange={(e) => this.onEmailFieldChange(e)}
+            />
+            <p style={style2}>{this.state.formErrors.email}</p>
+            <input
+              id="password"
+              type="password"
+              className="text-input"
+              placeholder="Password"
+              value={this.state.formFields.password}
+              onChange={(e) => this.onPasswordFieldChange(e)}
+            />
+            <p style={style2}>{this.state.formErrors.password}</p>
+            <input
+              id="password-confirm"
+              type="password"
+              className="text-input"
+              placeholder="Confirm Password"
+              value={this.state.formFields.password2}
+              onChange={(e) => this.onPassword2FieldChange(e)}
+            />
+            <p style={style2}>{this.state.formErrors.password2}</p>
+            <input type="submit" className="login-btn" value="Sign Up" />
+          </form>
+          <p id="login-switch">Already have an account? Click <Link to={"/login"}>here</Link> to login</p>
+        </div>
       </div>
     );
   }

@@ -1,3 +1,8 @@
+@import "variables";
+
 #article{
-  padding: 60px 30px 5px;
+  padding: 20px 30px 5px;
+  h2{
+    color: $colour-text-1
+  }
 }

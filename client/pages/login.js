@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 // Importing files
 import * as actions from '../actions/index';
 
-class Login extends React.Component {
+export class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

@@ -7,7 +7,7 @@ import Navbar from '../components/navbar';
 import { convertDateTime } from '../utils.js';
 const config = require('../../config');
 
-class NewsItem extends React.Component {
+export class ArticlePage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -61,5 +61,5 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewsItem);
+export default connect(mapStateToProps, mapDispatchToProps)(ArticlePage);
 

@@ -7,11 +7,11 @@ import { connect } from 'react-redux';
 import * as actions from '../actions/index';
 const config = require('../../config');
 
-class ErrorPage extends React.Component {
+export class ErrorPage extends React.Component {
   render() {
     return (
       <div className="main-body">
-        <div className="bg">
+        <div>
           <p>Error</p>
         </div>
       </div>

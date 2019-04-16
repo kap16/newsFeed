@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 const config = require('../../../config');
 
 export default class AddSource extends React.Component {

@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { convertDateTime } from '../../utils.js';
 import { browserHistory } from 'react-router';
-import PropTypes from 'prop-types';
 
 import * as actions from '../../actions/index';
 const config = require('../../../config');
